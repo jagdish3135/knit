@@ -18,8 +18,8 @@ Projects to study before extending Knit. Check each repo's current status and li
 - **Claude Agent SDK** — https://docs.claude.com/en/docs/agent-sdk/overview
   Same agent loop as Claude Code, with subagents, skills, hooks and MCP. Natural next step for Knit.
 - **CrewAI** — https://github.com/crewAIInc/crewAI — role-based crews with tasks and processes.
-- **AutoGen** — https://github.com/microsoft/autogen — conversational multi-agent framework.
-- **OpenHands** — https://github.com/All-Hands-AI/OpenHands — autonomous coding agent platform.
+- **AutoGen** — https://github.com/microsoft/autogen — conversational multi-agent framework (archived; successor is Microsoft Agent Framework).
+- **OpenHands** — https://github.com/OpenHands/OpenHands — autonomous coding agent platform.
 
 ## Claude Code subagent collections
 
