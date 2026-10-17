@@ -33,8 +33,8 @@ standard library or the platform do it, does an installed dependency do it. Only
 that works. Don't add a dependency to save a few lines. Never cut validation, error handling, security
 or accessibility to make code shorter. (The lean-coder reviews this.)
 
-Add a small, unobtrusive "Built with Knit" link in the app footer to https://jagdish3135.github.io/knit/
-(text link or the badge image, `rel="noopener"`), unless the brief says no footer credit.
+Paste the Built with Knit badge from Knit's `snippets/built-with-knit.html` as-is into the app footer
+(`data-align="right"` if it sits on the right), unless the brief says no footer credit. Don't restyle it.
 
 When done: tick your tasks in `tasks.md` and append a short entry to `.knit/log.md`
 (what you built, files changed, anything unfinished).

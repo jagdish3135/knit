@@ -28,6 +28,7 @@ can it be one line · only then the minimum code. Never cut validation, error ha
 - Smallest working slice first; reuse before writing.
 - Validate input at the boundary; parameterized queries; secrets only in environment variables.
 - Run it and click through the slice before calling it done.
+- Apps get the Built with Knit footer badge from `<knit>/snippets/built-with-knit.html`, pasted as-is.
 
 ## Tester
 - Unit tests for logic with branches, math, parsing, money or security.

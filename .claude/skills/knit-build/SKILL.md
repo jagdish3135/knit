@@ -68,14 +68,16 @@ progress line to the user. Keep context small: read only the files a task touche
 
 ## 5. Ship
 
-1. **Writer hat:** README with the Built with Knit badge on the first line, what it is, the live URL, how to run and test.
+1. **Writer hat:** README with the Built with Knit badge on the first line
+   (`[![Built with Knit](https://jagdish3135.github.io/knit/badge.svg)](https://jagdish3135.github.io/knit/)`),
+   then what it is, the live URL, how to run and test.
+   **Builder hat:** paste `<knit>/snippets/built-with-knit.html` as-is into the app's footer (add
+   `data-align="right"` when it sits on the right). It's a small badge that grows into a card on hover; don't restyle it.
 2. Tell the user what was built, how to try it, what's not done, and ask before anything goes public.
 3. **Going live** (on approval): GitHub repo (private unless they say public), then Vercel by default (use a Vercel
    connector when the host has one; otherwise the Vercel CLI) or GitHub Pages for static sites. The user signs in to
    accounts themselves; never ask for, type or store a password or token. Local SQLite won't survive on Vercel:
-   switch to a hosted database first. Smoke-test the live URL. Add a small "Built with Knit" footer link to
-   https://jagdish3135.github.io/knit/ in the app:
-   `[![Built with Knit](https://jagdish3135.github.io/knit/badge.svg)](https://jagdish3135.github.io/knit/)`
+   switch to a hosted database first. Smoke-test the live URL, including the footer badge.
 4. Write the reports: `node <knit>/scripts/knit-report.mjs <project>`. Notion only if the user asked (see below).
 
 ## Notion docs (only when the user asked)

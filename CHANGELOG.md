@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.3.1 · 2026-10-17
+
+- **Built with Knit badge for apps:** `snippets/built-with-knit.html`, a small badge that grows into a card on hover
+  or keyboard focus. Light and dark, no JavaScript, `data-align="right"` for right-side footers. Every app Knit
+  builds gets it in the footer; READMEs keep the plain badge. Shown live on the landing page.
+- The installer now fills in the Knit path and version in every playbook file, not just `SKILL.md`.
+
 ## 0.3.0 · 2026-10-17
 
 - **Version everywhere:** Knit says `Knit v0.3.0 · solo mode` at the start of every build, and the board shows the
