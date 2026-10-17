@@ -77,16 +77,16 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:16px;justify-content:space-between;
 <header class="hero">
   <div class="wrap">
     <span class="eyebrow">A multi-agent software team</span>
-    <h1>Your idea, built by <em>a whole team</em> of AI agents.</h1>
-    <p class="lede">Knit gives your coding agent a product manager, architect, designer, developers, tester, debugger, three reviewers and a writer. They ask, plan, build, test, review and ship. You approve every step.</p>
+    <h1>A team's discipline, <em>one session's cost</em>.</h1>
+    <p class="lede">Knit gives your coding agent a whole team's discipline: a lean plan, design polish, tests, review, docs and a live deploy. At the cost of one normal session. You approve every step.</p>
     <div class="ctas"><a class="btn primary" href="#start">Get started</a><a class="btn" href="https://github.com/jagdish3135/knit">View on GitHub</a></div>
     <div class="shot">
       <picture><source media="(prefers-color-scheme: dark)" srcset="assets/board-dark.png"><img src="assets/board-light.png" width="1440" height="1020" alt="Knit Board during a run: eight station cards on a thread from Intake to Ship, the Build station working on fixes, Verify showing found issues, and the live activity feed"></picture>
     </div>
     <div class="stats" aria-label="From Knit's first test run">
-      <div class="stat"><b>13 + 8</b><span>agents, plus specialists on call</span></div>
-      <div class="stat"><b>197 + 112</b><span>unit/API tests and e2e runs passing in the first build</span></div>
-      <div class="stat"><b>2.16M</b><span>tokens, tracked per agent</span></div>
+      <div class="stat"><b>+5%</b><span>tokens vs a plain session, same app</span></div>
+      <div class="stat"><b>−28%</b><span>less code than a plain session, more checks</span></div>
+      <div class="stat"><b>1 page</b><span>plan you approve before anything is built</span></div>
       <div class="stat"><b>5</b><span>coding tools supported</span></div>
     </div>
   </div>
@@ -95,13 +95,13 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:16px;justify-content:space-between;
 <section id="how" aria-labelledby="how-title">
   <div class="wrap">
     <h2 id="how-title">How it works</h2>
-    <p class="sub">A few clickable questions, then the team works in chunks: thin slices you can try, each one designed, built, tested and reviewed before the next.</p>
+    <p class="sub">One round of clickable questions, a one-page plan, then the build slice by slice. Your session wears each role's hat with short checklists, so it costs what a normal session costs. Want parallel agents? Team mode is one answer away, and it tells you it costs more.</p>
     <div class="figure"><picture><source media="(prefers-color-scheme: dark)" srcset="assets/flow-dark.svg"><img src="assets/flow-light.svg" width="1010" height="300" alt="Intake, requirements and plan, then design, build, verify and your OK for each chunk, then ship"></picture></div>
     <ol class="steps">
-      <li><h3>Intake</h3><p>Up to two rounds of multiple-choice questions: what, for whom, chunks or all at once, stack.</p></li>
-      <li><h3>Plan</h3><p>A PRD with numbered stories, an architecture and API contract. The Lean Coder cuts what needn't exist.</p></li>
-      <li><h3>Each chunk</h3><p>Builders work in parallel. A tester, a debugger and three reviewers loop until the code is approved.</p></li>
-      <li><h3>Ship</h3><p>Docs, a clean-checkout check, and a deploy to Vercel or GitHub Pages, once you say go.</p></li>
+      <li><h3>Intake</h3><p>One round of clickable questions: must-haves, stack, where it goes live, solo or team.</p></li>
+      <li><h3>Plan</h3><p>One page: stories, the look, the build, the tasks. The Lean checklist cuts what needn't exist.</p></li>
+      <li><h3>Build</h3><p>Slice by slice, with design polish built in and tests only where they pay. Nothing runs unwatched.</p></li>
+      <li><h3>Check and ship</h3><p>Tests, one review pass, a README with the badge, and a deploy to Vercel once you say go.</p></li>
     </ol>
   </div>
 </section>
@@ -109,7 +109,7 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:16px;justify-content:space-between;
 <section id="team" aria-labelledby="team-title">
   <div class="wrap">
     <h2 id="team-title">Meet the team</h2>
-    <p class="sub">Every agent has one job, its own shape and color, and the model that suits the job. Specialists for databases, mobile, AI, payments, accessibility, performance and SEO join only when a project needs them.</p>
+    <p class="sub">Each role is a short checklist your session follows in solo mode, and a dedicated agent in team mode. Specialists for databases, mobile, AI, payments, accessibility, performance and SEO join only when a project needs them.</p>
     <div class="figure"><picture><source media="(prefers-color-scheme: dark)" srcset="assets/team-dark.svg"><img src="assets/team-light.svg" width="960" height="520" alt="The Knit team: the Manager, 12 core agents and 8 optional specialists, each with its own shape"></picture></div>
   </div>
 </section>
@@ -130,12 +130,12 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:16px;justify-content:space-between;
 
 <section id="reports" aria-labelledby="reports-title">
   <div class="wrap two">
-    <div class="figure"><img src="assets/tokens.svg" width="760" height="388" alt="Tokens by agent in the first test run, 2.16 million in total" loading="lazy"></div>
+    <div class="figure"><img src="assets/benchmark.svg" width="760" height="240" alt="Tokens for the same calculator: plain session 117,960, Knit solo 124,120, Knit team mode 268,021" loading="lazy"></div>
     <div>
       <h2 id="reports-title">Every run, reported</h2>
       <ul class="checks">
         <li><b>Run report:</b> timeline, who handed what to whom, every agent run, debug loops and review rounds.</li>
-        <li><b>Token report:</b> tokens, tool uses and time per agent, with each one's share.</li>
+        <li><b>Benchmarked:</b> the same calculator costs 117,960 tokens in a plain session and 124,120 with Knit.</li>
         <li><b>Docs in Notion:</b> brief, PRD, plan, design, quality, run and token reports, updated at every gate.</li>
         <li><b>Your approval:</b> after the plan, after every chunk, and before anything goes live.</li>
       </ul>

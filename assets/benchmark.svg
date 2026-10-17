@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="760" height="240" viewBox="0 0 760 240" role="img" aria-label="Tokens for the same calculator: plain session 117,960, Knit solo 124,120, Knit team mode 268,021" font-family="ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif">
+<style>
+.bg{fill:#FFFFFF;stroke:#DCD7CB}.t{fill:#16181D;font-size:18px;font-weight:700}.s{fill:#525965;font-size:13px}.l{fill:#16181D;font-size:14px}.v{fill:#525965;font-size:13px;font-family:ui-monospace,monospace}
+.bar-a{fill:#CFC8BA}.bar-k{fill:#C99200}.bar-t{fill:#B8332C}
+@media (prefers-color-scheme: dark){.bg{fill:#0D1117;stroke:#2A3340}.t,.l{fill:#E9EDF3}.s,.v{fill:#A3AEBD}.bar-a{fill:#36404D}.bar-k{fill:#F2C230}.bar-t{fill:#FF6B6B}}
+</style>
+<rect class="bg" x=".5" y=".5" width="759" height="239" rx="16"/>
+<text class="t" x="24" y="38">Same calculator, same model: tokens used</text>
+<text class="s" x="24" y="58">Knit solo costs 5% more than a plain session, and leaves a plan, tests, a run log and a README</text>
+<text class="l" x="24" y="95">Plain session</text><rect class="bar-a" x="210" y="78" width="194" height="24" rx="6"/><text class="v" x="414" y="95">117,960</text>
+<text class="l" x="24" y="145">Knit solo (default)</text><rect class="bar-k" x="210" y="128" width="204" height="24" rx="6"/><text class="v" x="424" y="145">124,120</text>
+<text class="l" x="24" y="195">Knit team mode (v0.1)</text><rect class="bar-t" x="210" y="178" width="440" height="24" rx="6"/><text class="v" x="660" y="195">268,021</text>
+</svg>

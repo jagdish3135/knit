@@ -17,10 +17,15 @@
 
 ---
 
-Knit is a team of specialist AI agents for Claude Code, Codex, Cursor, OpenCode and Antigravity. A **Manager** asks you a few multiple-choice
-questions, then a Product Manager, Architect, Designer, Developers, Tester, Debugger, Reviewers and a
-Writer take the project from idea to working, tested code. Every handoff is a readable file, every step
-is logged, and nothing ships without your OK.
+Knit gives your coding agent a whole team's discipline (product thinking, a lean plan, design polish, tests,
+review, docs and a live deploy) **at the cost of one normal session**. It works in Claude Code, Codex, Cursor,
+OpenCode and Antigravity. One round of clickable questions, a one-page plan you approve, then the build, slice by
+slice. Every step is logged, and nothing goes live without your OK.
+
+**Same cost as a plain session:** on the same calculator, a plain session used 117,960 tokens and Knit used
+124,120 (+5%), with less code, more checks, a plan, a run log and a README. [Benchmark](docs/BENCHMARK.md).
+
+<p align="center"><img src="assets/benchmark.svg" width="760" alt="Tokens for the same calculator: plain session 117,960, Knit solo 124,120, Knit team mode 268,021"></p>
 
 ## How it works
 
@@ -31,12 +36,14 @@ is logged, and nothing ships without your OK.
   </picture>
 </p>
 
-1. **Intake.** Up to two rounds of clickable questions: what you're building, for whom, chunks or whole project, stack, must-haves.
-2. **Requirements and plan.** A PRD with numbered user stories, an architecture, an API contract and a task list. The Lean Coder cuts what doesn't need to be built; Security writes a threat model. **You approve the plan.**
-3. **Each chunk.** Design, then builders in parallel, then tests, a debug loop, and three reviewers (code, lean, security) until the code reviewer approves. **You approve each chunk.**
-4. **Ship.** Docs, a clean-checkout check, and a final check of every acceptance criterion. **You approve the release.**
+1. **Intake.** One round of clickable questions: must-haves, stack, where it goes live, solo or team.
+2. **Plan.** One page: stories with acceptance checks, the look, the build, the tasks. The Lean checklist cuts what doesn't need to exist. **You approve the plan.**
+3. **Build, slice by slice.** Your session puts on each role's hat (Designer, Builder, Tester) using [short checklists](.claude/skills/knit-build/roles.md), with tests only where they pay.
+4. **Check and ship.** Tests, lint and build, one Reviewer pass (bugs, security, lean, accessibility, polish), a README with the badge, and a live deploy. **You approve going live.**
 
-## The team
+**Solo or team.** Solo is the default: one session wears every hat, so it costs what a normal session costs. **Team mode** is opt-in: the specialist agents below work in parallel for speed, and Knit tells you up front that it costs more, because every agent re-reads the project.
+
+## The team (each role is a checklist in solo mode, an agent in team mode)
 
 <p align="center">
   <picture>
@@ -85,9 +92,10 @@ Change any agent's `model:` line to suit your plan.
 | You see working software | After chunk 1, then after every chunk | At the end |
 | If something is wrong | Caught early, small fix | Caught late, bigger fix |
 
-## A real run
+## A team-mode run
 
-The first test run built a local habit tracker end to end. Every number below comes from its run log.
+Team mode's first test built a local habit tracker with 11 agents. It worked, but it cost 2.16M tokens, which is
+why solo mode became the default. Every number below comes from its run log.
 
 | 11 agents · 22 runs | 2h 12m of agent time | 2.16M tokens | 197 unit/API tests | 112 / 112 e2e | Review: approved in round 2 |
 |:---:|:---:|:---:|:---:|:---:|:---:|
@@ -193,6 +201,7 @@ The README graphics are drawn by `node scripts/build-assets.mjs` from the shared
 - [x] Docs in Notion
 - [x] Works in Codex, Cursor, OpenCode and Antigravity
 - [x] Knit Board: a live UI of the agents at work
+- [x] Solo by default: same cost as a plain session ([benchmark](docs/BENCHMARK.md))
 - [ ] Project templates (Next.js + FastAPI, Next.js full-stack, Expo mobile)
 - [ ] Hooks: block edits to `.env`, run lint and tests after each agent finishes
 - [ ] Standalone runner on the Claude Agent SDK

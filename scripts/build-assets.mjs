@@ -74,9 +74,29 @@ ${body}
 <text x="505" y="284" font-size="13" text-anchor="middle" fill="${t.muted}">You approve the plan, every chunk and the release. Everything else, the team handles.</text>`);
 };
 
+// Benchmark bars (docs/BENCHMARK.md); one file that follows the reader's light/dark setting.
+const benchmark = () => {
+  const rows = [["Plain session", 117960, "bar-a"], ["Knit solo (default)", 124120, "bar-k"], ["Knit team mode (v0.1)", 268021, "bar-t"]];
+  const L = THEMES.light, D = THEMES.dark, w = 760, x0 = 210, bw = 440, max = 268021;
+  const bars = rows.map(([label, n, cls], i) => {
+    const y = 78 + i * 50, len = Math.round((n / max) * bw);
+    return `<text class="l" x="24" y="${y + 17}">${label}</text><rect class="${cls}" x="${x0}" y="${y}" width="${len}" height="24" rx="6"/><text class="v" x="${x0 + len + 10}" y="${y + 17}">${n.toLocaleString("en-US")}</text>`;
+  }).join("\n");
+  return svg(w, 240, "Tokens for the same calculator: plain session 117,960, Knit solo 124,120, Knit team mode 268,021", `<style>
+.bg{fill:${L.bg};stroke:${L.line}}.t{fill:${L.ink};font-size:18px;font-weight:700}.s{fill:${L.muted};font-size:13px}.l{fill:${L.ink};font-size:14px}.v{fill:${L.muted};font-size:13px;font-family:ui-monospace,monospace}
+.bar-a{fill:${L.faint}}.bar-k{fill:${L.accent}}.bar-t{fill:${AGENTS["security-reviewer"].light}}
+@media (prefers-color-scheme: dark){.bg{fill:${D.bg};stroke:${D.line}}.t,.l{fill:${D.ink}}.s,.v{fill:${D.muted}}.bar-a{fill:${D.faint}}.bar-k{fill:${D.accent}}.bar-t{fill:${AGENTS["security-reviewer"].dark}}}
+</style>
+<rect class="bg" x=".5" y=".5" width="${w - 1}" height="239" rx="16"/>
+<text class="t" x="24" y="38">Same calculator, same model: tokens used</text>
+<text class="s" x="24" y="58">Knit solo costs 5% more than a plain session, and leaves a plan, tests, a run log and a README</text>
+${bars}`);
+};
+
 for (const mode of ["light", "dark"]) {
   writeFileSync(new URL(`logo-${mode}.svg`, out), logo(mode));
   writeFileSync(new URL(`team-${mode}.svg`, out), team(mode));
   writeFileSync(new URL(`flow-${mode}.svg`, out), flow(mode));
 }
-console.log("Wrote logo, team and flow (light and dark) to assets/.");
+writeFileSync(new URL("benchmark.svg", out), benchmark());
+console.log("Wrote logo, team, flow (light and dark) and benchmark to assets/.");

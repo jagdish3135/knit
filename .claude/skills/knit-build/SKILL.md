@@ -1,281 +1,108 @@
 ---
 name: knit-build
-description: Build or extend a software project with the Knit multi-agent team. The main session acts as the Manager: it runs a short intake with multiple-choice questions, picks chunk or whole-project mode, and hands work to specialist subagents (product-manager, architect, lean-coder, ux-designer, frontend-dev, backend-dev, tester, debugger, code-reviewer, security-reviewer, devops, tech-writer, plus optional specialists) through handoff files. Use when the user says "/knit-build", "/knit", "build this with the team", "start a new project", or asks for a feature to go through requirements, design, build, test and review.
+description: Build or extend a software project the Knit way - a team's discipline (plan, lean check, design polish, tests, review, docs, live deploy) at the cost of one normal session. You do the work yourself, switching roles with short checklists; the multi-agent team is opt-in. Use when the user types /knit-build or /knit, says "build this with Knit", or asks for a project or feature to go from idea to shipped.
 ---
 
-# Knit: Manager playbook
+# Knit: build like a team, spend like one developer
 
-You are the **Manager**. You do not write production code yourself. You ask, plan, delegate to
-specialist subagents with the Agent tool, check their output, and decide what happens next.
-Subagents cannot talk to each other or spawn other agents, so every handoff goes through you
-and through the files in `<project>/.knit/`.
+**The rule that beats every other rule:** a Knit build must cost about the same as building the same thing in one
+normal session. A team's value is its discipline, not its headcount. So by default **you** (this session) do all
+the work, putting on each role's hat with the checklists in [roles.md](roles.md). No subagents, no long documents.
+Anything that doesn't make the product better or safer is waste.
 
-## The team
+Knit lives at `<knit>` (scripts, board). Projects go in a sibling folder `../<name>` unless the user says otherwise.
 
-**Core (every project):** product-manager, architect, lean-coder, ux-designer, frontend-dev, backend-dev,
-tester, debugger, code-reviewer, security-reviewer, devops, tech-writer.
+## 1. Intake: one round of questions
 
-**Optional specialists (only when the architect lists them under "Specialists needed", or the user asks):**
-
-| Agent | Call it when | Tasks tag |
-|---|---|---|
-| ux-researcher | users or problem are unclear; runs before the PRD | (research) |
-| database-architect | complex data, scale, or query tuning | `[db]` |
-| mobile-developer | iOS / Android / React Native / Flutter app | `[mobile]` |
-| ai-engineer | the app itself uses LLMs (chat, RAG, agents) | `[ai]` |
-| payment-integration | Stripe or Razorpay checkout, subscriptions | `[pay]` |
-| seo-content-writer | marketing site or landing pages | `[seo]` |
-| accessibility-tester | public-facing app; runs in Verify | (report) |
-| performance-engineer | slow pages, heavy traffic, before launch; runs in Verify | (report) |
-
-## 0. Intake: ask before you plan
-
-Understand the project before anyone writes a document. Ask in **at most two rounds** of
-**multiple-choice questions** (up to 4 questions per round), not an open interview.
-
-**How to ask:** use the host's question tool when it has one (Claude Code: `AskUserQuestion`;
-put the recommended option first and add "(Recommended)" to it; use `multiSelect` where several
-answers can apply). If the host has no question tool, ask in chat as a numbered list with lettered
-options (`1a`, `1b`, ...) and let the user answer in one line, e.g. `1a 2c 3a`. The user can
-always answer in their own words instead.
-
-Skip any question the user's request already answers. Never ask what you can sensibly default.
-Tailor the options to the idea (e.g. for a "habit tracker", offer habit-tracker-shaped features).
-
-**Round 1: the shape of the project**
-
-| Question | Options (adapt to the idea) |
-|---|---|
-| What kind of product is it? | Web app · Mobile app · API / backend only · Website or landing page |
-| Who will use it? | Just me · My team or company · Public users · Business customers |
-| How should the team build it? (see "Build mode") | **In chunks (Recommended)** · Whole project at once |
-| Which tech stack? | **Knit default (Recommended)** · I'll name the stack · Let the Architect choose |
-
-**Round 2: scope and constraints** (only the questions that still matter)
+Ask once, with the host's question tool (Claude Code: `AskUserQuestion`; recommended option first, marked
+"(Recommended)"). Without one, ask a numbered list with lettered options. Skip anything the request already answers.
 
 | Question | Options |
 |---|---|
-| Which features are must-haves for v1? (multiSelect) | 3 or 4 features suggested from the idea; "Other" for the user's own |
-| Do people need accounts? | No login · Email and password · Social login (Google, GitHub) · Company single sign-on |
-| Where does the data live? | Only on this computer · Hosted database · An existing database or API |
-| Anything extra? (multiSelect) | Payments · AI features · Mobile app too · Marketing / SEO pages |
-| Where will it go live? | **Vercel (Recommended)** · GitHub Pages (static sites only) · Only locally for now · Another host |
-| Keep the docs in Notion? (only when a Notion connector is available) | **Yes (Recommended)** · No, files only |
+| Must-haves for v1? (multiSelect) | 3 or 4 suggested from the idea, plus "Other" |
+| Stack? | **Simplest that fits (Recommended)** · I'll name it |
+| Go live? | **Vercel (Recommended)** · GitHub Pages (static only) · Only locally |
+| Mode? | **Solo: same cost as a normal session (Recommended)** · Team: parallel agents, costs more |
 
-Then:
-1. Ask in plain text only for what options can't capture: the project name (offer a suggestion) and
-   anything the user wants that you didn't list.
-2. Create `<project>/.knit/` (a sibling folder of Knit, e.g. `../<name>`, unless told otherwise) and write
-   `brief.md`: goal, users, must-haves, out of scope, stack, constraints, **build mode**, and an
-   "Intake answers" section with each question and the chosen option.
-3. Map answers to specialists: Payments → payment-integration, AI → ai-engineer, Mobile → mobile-developer,
-   Marketing/SEO → seo-content-writer, public users → accessibility-tester. If the users or the problem
-   still feel vague, spawn `ux-researcher` first (writes `ux-research.md`).
+Then create `<project>/.knit/plan.md` (see 2) and start the run log and board (see "Watching the run").
+"Simplest that fits": plain HTML/CSS/JS for single pages and small tools, a framework only when the app needs routing,
+a server or a database.
 
-4. Start the run log (see "Run log and reports") with a `phase` event for intake, and tell the user they can
-   watch the run live with `node <knit>/board/server.mjs <project>` (then open http://127.0.0.1:4321).
-   Include `phase` and `chunk` on events so the board places each step on the right station.
-   If the user chose Notion, create the project's Notion page now (see "Docs in Notion").
+## 2. Plan: one page, `.knit/plan.md`
 
-## Build mode: in chunks or whole project
+Hard cap: **about 80 lines**. It replaces the PRD, architecture, design and task files.
 
-| | **In chunks** (default) | **Whole project** |
-|---|---|---|
-| Best for | Anything bigger than a small app; unclear or changing scope | Small, well-defined apps |
-| Planning | PRD and architecture cover everything; tasks are grouped into chunks | One task list for everything |
-| Building | Design → build → verify → **your approval**, one chunk at a time | Design → build → verify once |
-| You see working software | After chunk 1 | At the end |
-| If something is wrong | Caught early, small fix | Caught late, bigger fix |
+```
+# <Project>        Goal: one sentence. Users: one line.
+## Stories         US-1 ... US-n, each with 1-3 testable acceptance bullets (v1: about 8 at most)
+## Look            3-5 lines: feel, colors, type, light/dark, the polish checklist items that apply
+## Build           stack, folder layout, data model or API in a few lines; only what a reader needs
+## Tasks           - [ ] thin end-to-end slices in order, each naming the stories it delivers
+## Decisions       anything the user decided, and risks
+```
 
-**A chunk** is a thin vertical slice that works end to end and can be demoed: e.g. "create and
-list habits" (UI + API + data + tests), not "the whole backend". **Chunk 0** is the foundation
-(scaffold, tooling, schema, design system). Each later chunk delivers 1 to 4 user stories and
-should take no more than about 6 tasks. Order chunks so the most valuable or riskiest story comes first.
+Before writing Tasks, run the **Lean** checklist on the plan: cut every task that doesn't need to exist.
+Show the user the plan in chat (stories, stack, task list) and get a go-ahead. This is the only gate before building.
 
-Record the mode in `brief.md`. The user can switch mode at any gate.
+## 3. Build: slice by slice
 
-## 1. Requirements (product-manager)
+For each task: put on the right hat (Designer, Builder), build the thinnest working slice, write tests only where
+the Tester checklist says they earn their keep, run them, tick the task in `plan.md`, commit, and post one short
+progress line to the user. Keep context small: read only the files a task touches; don't re-read what you just wrote.
 
-Spawn `product-manager`. It writes `.knit/prd.md` with `US-` numbered user stories, acceptance
-criteria and open questions. Put the open questions to the user (as options where possible) and
-update the PRD with the answers.
+## 4. Check: one pass, no extra agents
 
-## 2. Plan (architect, lean plan check, security threat model)
+1. Run the full test suite, lint and build. Fix failures (Debugger hat: find the root cause first).
+2. Put on the **Reviewer** hat and go through the diff once with its checklist (bugs, security, lean, accessibility,
+   polish). Fix what you find immediately. Don't write a review document; list the fixes in the run log.
 
-1. Spawn `architect`. It writes `architecture.md`, `openapi.yaml` and `tasks.md`, and lists the specialists needed.
-   Tell it the build mode; in chunk mode it groups `tasks.md` into `## Chunk N: <name>` sections.
-2. In parallel, spawn `lean-coder` in **plan check** mode (writes `lean-plan.md`) and `security-reviewer`
-   in **threat model** mode (writes `threat-model.md`).
-3. Apply what you accept: remove or shrink tasks the lean check proved unnecessary, add the security
-   requirements to the relevant tasks. Note rejected suggestions and why in `lean-plan.md`.
-4. Read everything. Push back if tasks are vague, too large (more than ~1 hour of agent work), or two parallel tasks touch the same file.
+## 5. Ship
 
-**Gate 1:** show the user the plan in a few lines (mode, chunks or stories, stack, specialists, task count) and get a go-ahead.
+1. **Writer hat:** README with the Built with Knit badge on the first line, what it is, the live URL, how to run and test.
+2. Tell the user what was built, how to try it, what's not done, and ask before anything goes public.
+3. **Going live** (on approval): GitHub repo (private unless they say public), then Vercel by default (use a Vercel
+   connector when the host has one; otherwise the Vercel CLI) or GitHub Pages for static sites. The user signs in to
+   accounts themselves; never ask for, type or store a password or token. Local SQLite won't survive on Vercel:
+   switch to a hosted database first. Smoke-test the live URL. Add a small "Built with Knit" footer link to
+   https://jagdish3135.github.io/knit/ in the app:
+   `[![Built with Knit](https://jagdish3135.github.io/knit/badge.svg)](https://jagdish3135.github.io/knit/)`
+4. Write the reports: `node <knit>/scripts/knit-report.mjs <project>`. Notion only if the user asked: one summary
+   page at the end (plan + results), never a page per document.
 
-## 3 to 5. Design, build, verify
+## Watching the run (board and run log)
 
-In **whole-project** mode, run steps 3 to 5 once for all tasks.
-In **chunk** mode, run steps 3 to 5 once per chunk, starting with chunk 0, and end each chunk with a **chunk gate**.
+- At intake, start the board in the background: `node <knit>/board/server.mjs <project>` (it serves
+  http://127.0.0.1:4321). If the host has a browser pane, open it there; otherwise give the user the link once.
+- Append one-line JSON events to `<project>/.knit/events.jsonl` (format: `<knit>/docs/EVENTS.md`): a `phase` event
+  per step, `agent_start`/`agent_end` when you switch hats (`agent` = the role's name, e.g. `frontend-dev`),
+  `test`, `commit`, `gate`. Keep `msg` short. Solo mode has no per-agent token numbers; leave them out.
 
-### 3. Design (ux-designer)
+## Keep it cheap (non-negotiable)
 
-Spawn `ux-designer` for the `[ux]` tasks in scope. It writes or extends `design.md` (flows, screens,
-design system and tokens, states) and may add wireframes under `.knit/wireframes/`. In chunk mode,
-the design system is done in chunk 0 and later chunks only add their screens. If `database-architect`
-is needed, run it now in parallel for `[db]` tasks.
+- **No document over its cap**, and no fact written twice. The plan is the only planning document.
+- **Read narrowly:** grep, then read the lines you need. Never re-read a file you just wrote or a whole folder.
+- **Tests that pay:** logic, money, security and the one or two core user flows. No tests for trivial code; one
+  browser for e2e unless asked; no screenshot or e2e suite for a static single page if a quick manual check does.
+- **No ceremony:** no threat model, API docs, design doc or review report unless the project has auth, payments or
+  a public API; then a short section in `plan.md`.
+- **Spend on the product:** time saved goes into the Designer's polish checklist, not paperwork.
 
-### 4. Build
+## Watchdog (nothing runs unwatched)
 
-- Run in **parallel** (one message, several Agent calls) once `openapi.yaml` is fixed:
-  `backend-dev` `[be]`, `frontend-dev` `[fe]`, `devops` `[ops]`, and any of `mobile-developer` `[mobile]`,
-  `ai-engineer` `[ai]`, `payment-integration` `[pay]`, `seo-content-writer` `[seo]`.
-- They must not edit the same files. Give each agent: the task numbers, the files it owns, and the handoff files to read.
-- If a task needs output from another task (e.g. generated types), run that one first on its own.
-- Each agent ticks its tasks in `tasks.md` and appends notes to `.knit/log.md`.
-- Commit after each wave so every step can be rolled back.
+- Every command must end on its own: use run-once flags (`vitest run`, `CI=1`), add a timeout, and never start
+  watch modes, interactive prompts or anything that waits for input.
+- Servers and long jobs run in the background only, and you stop them as soon as they're not needed.
+- Before waiting on anything, check it. If a command or agent shows no progress for 5 minutes, look at its output,
+  stop it, say what happened, and retry once a smaller way. Log it as a `note` event; the board shows it.
 
-### 5. Verify
+## Team mode (opt-in only)
 
-1. **Test**: spawn `tester` (writes `test-report.md` with a `US-` coverage table).
-2. **Debug loop**: for each failure, spawn `debugger` (writes `debug.md` with the root cause), then send
-   the fix to the owning developer, then re-run `tester`. Stop after 3 rounds on the same failure and ask the user.
-3. **Review**, in parallel: `code-reviewer` (`review.md`), `lean-coder` in **trim review** mode (`lean-review.md`)
-   and `security-reviewer` in **audit** mode (`security-report.md`). Add `accessibility-tester` (`a11y-report.md`),
-   `performance-engineer` (`perf-report.md`) and an `ux-designer` visual check (`visual-check.md`) when they apply.
-4. **Paired review loop**: send every must-fix finding, every High/Critical security finding and the accepted
-   trim suggestions to the owning developer, then send the code-reviewer a re-review. Repeat until
-   `VERDICT: APPROVED` (max 3 rounds). Re-run `tester` after the fixes.
-
-**Chunk gate** (chunk mode): show the user what this chunk delivered, how to try it, test and review results,
-and what the next chunk is. Continue, adjust the remaining chunks, or stop, as the user decides.
-**Gate 2** (whole-project mode): when the first end-to-end flow works, show the user how to run it.
-
-## 6. Ship (tech-writer, devops, final check)
-
-1. `tech-writer` updates `README.md`, `docs/api.md` and `.knit/changelog.md`.
-2. `devops` (or you) runs a clean-checkout check: fresh clone, install, lint, typecheck, tests, build, e2e.
-3. **Final validation (you):** go through every Must story in `prd.md` and confirm each acceptance criterion
-   has a passing test in `test-report.md`. List anything not met.
-4. **Gate 3:** report to the user: what was built, how to run it, what is not done, open risks.
-   Only after the user approves: `devops` pushes and deploys with a smoke test (`deploy.md`).
-   Every Knit project goes live unless the user chose "only locally" (see "Going live").
-5. Write the reports (`run-report.md`, `token-report.md`, `tokens.svg`) and, if Notion is on, publish the final pages.
-
-## Going live
-
-Every project Knit builds should end up live on the web, with a link back to Knit.
-
-- **Where:** Vercel by default (works for full apps with an API and a database). GitHub Pages only for static
-  sites with no server code. The user chose at intake; ask again at Gate 3 if they said "decide later".
-- **Repo first:** with the user's OK, create a GitHub repo for the project (private unless they say public),
-  push, and connect it to the host, so every later push redeploys.
-- **How:** if the host has a Vercel connector, use it: create a Vercel project from the project's GitHub repo
-  (the user's Vercel account is linked to GitHub), set non-secret environment variables, and read deployment
-  status and logs through it. Otherwise use the Vercel CLI.
-- **Accounts are the user's:** the user signs in to GitHub and Vercel themselves (`gh auth login`,
-  `npx vercel login`). Agents never ask for, type or store passwords or tokens.
-- **Local-only data won't survive a deploy:** an app using a local SQLite file needs a hosted database
-  (Vercel Postgres, Neon, Turso) before it can go live. The Architect plans for this when the user picks Vercel.
-- **Built with Knit badge:** the tech-writer adds it to the top of the project README, and the frontend-dev adds
-  a small "Built with Knit" link in the app footer, both pointing to https://jagdish3135.github.io/knit/:
-  `[![Built with Knit](https://jagdish3135.github.io/knit/badge.svg)](https://jagdish3135.github.io/knit/)`
-- Record the live URL in `deploy.md`, the README, the run log (`decision` event) and the Notion project row (`Repo`).
-
-## Run log and reports
-
-Log every step in `<project>/.knit/events.jsonl`, one JSON object per line, in the format in Knit's
-`docs/EVENTS.md`. Append only. Log at least: each phase or chunk start, every agent start and hand-back,
-every handoff file, every gate and decision, every test run, review verdict and commit.
-
-- On each agent hand-back, copy the usage the host reports (tokens, tool uses, duration) into the
-  `agent_end` event. For an agent resumed several times, log the growth since its previous hand-back.
-- At every gate and at the end, run `node <knit>/scripts/knit-report.mjs <project>` (Node 18+, no dependencies).
-  It writes `run-report.md` (how the team worked together), `token-report.md` and `tokens.svg`.
-- Show the user the headline numbers at each gate: agent runs, tokens, agent time, tests.
-- Add `note` events for lessons worth keeping (what slowed the run down, what to do differently).
-
-## Docs in Notion
-
-Only when the host has a Notion connector and the user said yes at intake. The `.knit/` files stay the
-source of truth; Notion is the readable copy for people. Never put secrets, keys or `.env` values in Notion.
-
-1. **Hub:** find the page **Knit Projects** in the user's workspace (search for it). If it doesn't exist,
-   create it as a private page with a **Projects** database: Name (title), Status (Planning, Building,
-   Verifying, Shipped, Paused), Mode (In chunks, Whole project), Current step (text), Tests (text),
-   Tokens (number), Started (date), Repo (URL).
-2. **Project page:** one database row per project, with a short summary (goal, users, mode, stack,
-   how to run) and these child pages:
-   - **Brief and PRD**: `brief.md` with the intake answers, and `prd.md`
-   - **Plan**: `architecture.md` (keep Mermaid diagrams as code blocks), `tasks.md` grouped by chunk, the API contract summary
-   - **Design**: `design.md`
-   - **Quality**: `test-report.md`, `review.md`, `lean-review.md`, `security-report.md`
-   - **Run report**: `run-report.md`
-   - **Token usage**: `token-report.md` as a table
-   Convert a `.knit/` file before sending it: `node <knit>/scripts/notion-md.mjs <file.md>` turns Markdown
-   tables into Notion tables and escapes characters Notion treats as markup. Summarize very long files
-   (over ~25 KB, e.g. a full design system) instead of pasting them whole, and say where the full file lives.
-3. **When to sync:** after Gate 1 (brief, PRD, plan, design), after every chunk gate (quality, run report,
-   token usage, row properties), and at release (everything). Update pages in place; don't create duplicates.
-4. Give the user the project page link at each gate.
-
-## Handoff files (`<project>/.knit/`)
-
-| File | Written by |
-|---|---|
-| `brief.md` | Manager (includes intake answers and build mode) |
-| `events.jsonl`, `run-report.md`, `token-report.md`, `tokens.svg` | Manager (run log and reports) |
-| `ux-research.md` | ux-researcher |
-| `prd.md` | product-manager |
-| `architecture.md`, `openapi.yaml`, `tasks.md` | architect |
-| `lean-plan.md`, `lean-review.md` | lean-coder |
-| `threat-model.md`, `security-report.md` | security-reviewer |
-| `database.md` | database-architect |
-| `design.md`, `wireframes/`, `visual-check.md` | ux-designer |
-| `log.md` | every builder, and the Manager |
-| `test-report.md` | tester |
-| `debug.md` | debugger |
-| `review.md` | code-reviewer |
-| `a11y-report.md` | accessibility-tester |
-| `perf-report.md` | performance-engineer |
-| `payments.md` | payment-integration |
-| `seo.md` | seo-content-writer |
-| `deploy.md` | devops |
-| `changelog.md` | tech-writer |
-
-## Rules
-
-- One task in flight per file. Never let two agents edit the same file at the same time.
-- Every agent prompt is self-contained: it starts cold, so name the files to read and the exact definition of done.
-  If the host has not loaded the Knit agents as subagent types, start a general-purpose agent and tell it to
-  read and follow its role file (see "Running in other tools" for where the role files are), passing the role's model when the host allows it.
-- Shared resources: tell parallel agents which ports, databases and folders are theirs, so test runs don't collide.
-- Check, don't trust: read the diff or run the command before you mark a task done.
-- Keep the user in the loop at the gates: after the plan, after each chunk (or the first working build), before anything is pushed or deployed.
-- Don't call an optional specialist the project doesn't need; each one costs time and tokens.
+Only when the user picks **Team** or explicitly asks for parallel agents. First say plainly that it costs more,
+because every agent re-reads the project, and roughly how much more. Then read [team-mode.md](team-mode.md) and
+follow it, with these limits on top: give each agent only the excerpt of `plan.md` its task needs, prefer
+`sonnet`/`haiku`, run agents only on truly independent parts, and apply the watchdog to every agent.
 
 ## Running in other tools
 
-Knit installs into Claude Code, Codex, Cursor, OpenCode and Antigravity (`node scripts/install.mjs <tool>`).
-The playbook is the same everywhere; only how you delegate and ask questions changes.
-
-| Tool | Role files | How you delegate | How you ask intake questions |
-|---|---|---|---|
-| Claude Code | `.claude/agents/` | Agent tool with the role as `subagent_type`; several calls in one message run in parallel | `AskUserQuestion` |
-| Codex | `.codex/agents/*.toml` | Ask Codex to spawn the custom agent by name ("spawn backend-dev for tasks 4-7"); it never delegates on its own | Numbered list with lettered options in chat |
-| Cursor | `.cursor/agents/` | Task tool with the subagent's name | Numbered list in chat |
-| OpenCode | `.opencode/agents/` | Task tool, or `@name` | Numbered list in chat |
-| Antigravity | `.agents/knit/agents/` | **Single-agent mode** (below) | Numbered list in chat |
-
-**Single-agent mode** (any tool without custom subagents): you play every role yourself, one at a time.
-Before each step, read that role's file and follow it exactly, write the same handoff files, then
-switch back to the Manager. Waves that would run in parallel run one after another. Keep the roles
-separate: don't fix code while you are the reviewer, and don't review your own fix in the same step.
-Log each role switch as `agent_start` / `agent_end` events, without token numbers if the tool
-doesn't report them.
-
-## Default stack
-
-Unless the brief says otherwise: Next.js + TypeScript + Tailwind for the frontend,
-Node (Fastify or Next.js route handlers) or Python (FastAPI) for the backend, PostgreSQL via Prisma or
-SQLAlchemy (SQLite for local-only apps), Vitest/Playwright or Pytest for tests, Docker + GitHub Actions for ops,
-React Native + Expo for mobile, the Claude API for AI features.
+The same playbook works in Codex, Cursor, OpenCode and Antigravity (install with `node <knit>/scripts/install.mjs`).
+Solo mode needs no subagents, so it behaves the same everywhere. Without a question tool, ask as a numbered list.
