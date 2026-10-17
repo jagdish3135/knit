@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="124" height="20" viewBox="0 0 124 20" role="img" aria-label="Built with Knit">
+  <title>Built with Knit</title>
+  <linearGradient id="s" x2="0" y2="100%"><stop offset="0" stop-color="#fff" stop-opacity=".08"/><stop offset="1" stop-opacity=".08"/></linearGradient>
+  <clipPath id="r"><rect width="124" height="20" rx="3"/></clipPath>
+  <g clip-path="url(#r)">
+    <rect width="64" height="20" fill="#16181D"/>
+    <rect x="64" width="60" height="20" fill="#F2C230"/>
+    <rect width="124" height="20" fill="url(#s)"/>
+  </g>
+  <g font-family="Verdana,DejaVu Sans,Geneva,sans-serif" font-size="11">
+    <text x="8" y="14" fill="#E9EDF3">built with</text>
+    <text x="90" y="14" fill="#16181D" font-weight="bold">Knit</text>
+  </g>
+  <g transform="translate(70 3.5) scale(.42)" fill="none" stroke-width="3.4" stroke-linecap="round">
+    <path d="M5 16c0-6 5-10 11-10s11 4 11 10" stroke="#16181D"/>
+    <path d="M27 16c0 6-5 10-11 10S5 22 5 16" stroke="#16181D" stroke-dasharray="4 5"/>
+    <circle cx="16" cy="16" r="3.5" fill="#16181D" stroke="none"/>
+  </g>
+</svg>

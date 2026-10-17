@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 // Installs the Knit team into a project (or your user folders) for Claude Code, Codex, Cursor,
-// OpenCode or Antigravity. Source of truth: .claude/agents/*.md and .claude/skills/knit/.
+// OpenCode or Antigravity. Source of truth: .claude/agents/*.md and .claude/skills/knit-build/.
 // Usage: node scripts/install.mjs <claude|codex|cursor|opencode|antigravity|all>... [--target <dir>] [--global]
 import { cpSync, existsSync, mkdirSync, readFileSync, readdirSync, writeFileSync } from "node:fs";
 import { homedir } from "node:os";
@@ -29,11 +29,11 @@ const agents = readdirSync(join(knit, ".claude/agents")).filter((f) => f.endsWit
   const meta = Object.fromEntries(fm.split("\n").map((l) => [l.slice(0, l.indexOf(":")).trim(), l.slice(l.indexOf(":") + 1).trim()]));
   return { ...meta, tools: meta.tools.split(",").map((t) => t.trim()), body: body.trim() + "\n" };
 });
-const skill = join(knit, ".claude/skills/knit");
+const skill = join(knit, ".claude/skills/knit-build");
 const home = homedir();
 const base = (projectDir, userDir) => (global ? join(home, userDir) : join(target, projectDir));
 const write = (file, text) => { mkdirSync(dirname(file), { recursive: true }); writeFileSync(file, text); };
-const copySkill = (dir) => cpSync(skill, join(dir, "knit"), { recursive: true });
+const copySkill = (dir) => cpSync(skill, join(dir, "knit-build"), { recursive: true });
 const can = (a, tool) => a.tools.includes(tool);
 const yamlStr = (s) => JSON.stringify(s); // a JSON string is a valid YAML double-quoted scalar
 
@@ -43,7 +43,7 @@ const agentsMd = (tool, where, note) => {
   const file = join(target, "AGENTS.md"), mark = `<!-- knit:${tool} -->`;
   const old = existsSync(file) ? readFileSync(file, "utf8") : "";
   if (old.includes(mark)) return;
-  const head = old.includes("## Knit team") ? "" : "## Knit team\n\nTo build or extend this project with the Knit multi-agent team, load the `knit` skill and act as its Manager.\n\n";
+  const head = old.includes("## Knit team") ? "" : "## Knit team\n\nTo build or extend this project with the Knit multi-agent team, load the `knit-build` skill (`/knit-build` where slash commands exist) and act as its Manager.\n\n";
   write(file, `${old}${old ? "\n" : ""}${head}${mark}\n- **${tool}:** role files are in \`${where}\`. ${note}\n`);
 };
 
@@ -92,4 +92,4 @@ const installers = {
   },
 };
 
-for (const t of tools) console.log(`${t.padEnd(12)} ${agents.length} agents + knit skill -> ${installers[t]()}`);
+for (const t of tools) console.log(`${t.padEnd(12)} ${agents.length} agents + knit-build skill -> ${installers[t]()}`);

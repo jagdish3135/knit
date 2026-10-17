@@ -1,6 +1,6 @@
 # Knit in other tools
 
-The team is written once, in Claude Code's format (`.claude/agents/*.md` and `.claude/skills/knit/`).
+The team is written once, in Claude Code's format (`.claude/agents/*.md` and `.claude/skills/knit-build/`).
 `scripts/install.mjs` turns it into each tool's own format. No dependencies; Node 18 or newer.
 
 ```bash
@@ -18,11 +18,11 @@ node scripts/install.mjs claude cursor --global
 
 | Tool | Agents | Knit skill | Delegation | Notes |
 |---|---|---|---|---|
-| **Claude Code** | `.claude/agents/*.md` | `.claude/skills/knit/` | Subagents, in parallel | Native format; full support |
-| **Codex** | `.codex/agents/*.toml` | `.agents/skills/knit/` | Subagents, only when asked by name | Adds a note to `AGENTS.md`. Model is inherited; `opus` roles get `high` reasoning effort, `sonnet` `medium`, `haiku` `low` |
-| **Cursor** | `.cursor/agents/*.md` | `.cursor/skills/knit/` | Subagents via the Task tool | `model: inherit`. Cursor also reads `.claude/agents/`, but its own folder wins |
-| **OpenCode** | `.opencode/agents/*.md` | `.opencode/skills/knit/` | Subagents via the Task tool or `@name` | `mode: subagent`; each role's tool list becomes `permission` (edit, bash, webfetch, websearch) |
-| **Antigravity** | `.agents/knit/agents/*.md` | `.agents/skills/knit/` | **Single-agent mode** | No documented custom subagents, so the Manager plays each role in turn. Adds a note to `AGENTS.md` |
+| **Claude Code** | `.claude/agents/*.md` | `.claude/skills/knit-build/` | Subagents, in parallel | Native format; full support |
+| **Codex** | `.codex/agents/*.toml` | `.agents/skills/knit-build/` | Subagents, only when asked by name | Adds a note to `AGENTS.md`. Model is inherited; `opus` roles get `high` reasoning effort, `sonnet` `medium`, `haiku` `low` |
+| **Cursor** | `.cursor/agents/*.md` | `.cursor/skills/knit-build/` | Subagents via the Task tool | `model: inherit`. Cursor also reads `.claude/agents/`, but its own folder wins |
+| **OpenCode** | `.opencode/agents/*.md` | `.opencode/skills/knit-build/` | Subagents via the Task tool or `@name` | `mode: subagent`; each role's tool list becomes `permission` (edit, bash, webfetch, websearch) |
+| **Antigravity** | `.agents/knit/agents/*.md` | `.agents/skills/knit-build/` | **Single-agent mode** | No documented custom subagents, so the Manager plays each role in turn. Adds a note to `AGENTS.md` |
 
 `--global` writes to the user folders instead: `~/.claude/`, `~/.codex/agents/` + `~/.agents/skills/`,
 `~/.cursor/`, `~/.config/opencode/`.

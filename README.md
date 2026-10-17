@@ -50,7 +50,7 @@ is logged, and nothing ships without your OK.
 
 | Agent | File | Model | Job |
 |---|---|---|---|
-| Manager | [`skills/knit/SKILL.md`](.claude/skills/knit/SKILL.md) | your session | Intake, build mode, gates, delegation, loops, final validation |
+| Manager | [`skills/knit-build/SKILL.md`](.claude/skills/knit-build/SKILL.md) | your session | Intake, build mode, gates, delegation, loops, final validation |
 | Product Manager | [`product-manager.md`](.claude/agents/product-manager.md) | opus | PRD, `US-` user stories, acceptance criteria |
 | Architect | [`architect.md`](.claude/agents/architect.md) | opus | Architecture, `openapi.yaml` contract, tasks grouped into chunks |
 | Lean Coder | [`lean-coder.md`](.claude/agents/lean-coder.md) | sonnet | Plan check and trim review: the best code is the code nobody had to write |
@@ -152,7 +152,7 @@ stay the source of truth; Notion is the readable, shareable copy.
 ## Quick start
 
 1. Clone this repo and open Claude Code in the `knit` folder, so the agents and the skill load.
-2. Type `/knit` and your idea, e.g. `/knit a habit tracker with daily check-ins and streaks`.
+2. Type `/knit-build` and your idea, e.g. `/knit-build a habit tracker with daily check-ins and streaks`.
 3. Answer the questions. The team builds in a sibling folder (`../<project-name>`).
 
 ## Works in your tool
