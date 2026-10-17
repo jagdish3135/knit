@@ -169,6 +169,9 @@ Every project Knit builds should end up live on the web, with a link back to Kni
   sites with no server code. The user chose at intake; ask again at Gate 3 if they said "decide later".
 - **Repo first:** with the user's OK, create a GitHub repo for the project (private unless they say public),
   push, and connect it to the host, so every later push redeploys.
+- **How:** if the host has a Vercel connector, use it: create a Vercel project from the project's GitHub repo
+  (the user's Vercel account is linked to GitHub), set non-secret environment variables, and read deployment
+  status and logs through it. Otherwise use the Vercel CLI.
 - **Accounts are the user's:** the user signs in to GitHub and Vercel themselves (`gh auth login`,
   `npx vercel login`). Agents never ask for, type or store passwords or tokens.
 - **Local-only data won't survive a deploy:** an app using a local SQLite file needs a hosted database

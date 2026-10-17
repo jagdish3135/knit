@@ -33,7 +33,13 @@ const skill = join(knit, ".claude/skills/knit-build");
 const home = homedir();
 const base = (projectDir, userDir) => (global ? join(home, userDir) : join(target, projectDir));
 const write = (file, text) => { mkdirSync(dirname(file), { recursive: true }); writeFileSync(file, text); };
-const copySkill = (dir) => cpSync(skill, join(dir, "knit-build"), { recursive: true });
+// Installed copies live outside this repo, so the skill's `<knit>` placeholder becomes this repo's real path.
+const copySkill = (dir) => {
+  const out = join(dir, "knit-build");
+  cpSync(skill, out, { recursive: true });
+  const file = join(out, "SKILL.md");
+  writeFileSync(file, readFileSync(file, "utf8").replaceAll("<knit>", knit.replace(/\\/g, "/")));
+};
 const can = (a, tool) => a.tools.includes(tool);
 const yamlStr = (s) => JSON.stringify(s); // a JSON string is a valid YAML double-quoted scalar
 
