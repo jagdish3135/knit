@@ -131,9 +131,9 @@ node board/server.mjs ../my-project            # live: follows .knit/events.json
 node board/server.mjs ../my-project --replay   # replays a finished run step by step
 ```
 
-Open http://127.0.0.1:4321. Each station card shows its agents, what they're doing, and its tokens.
+`/knit-build` starts it for you and it opens in your browser. Each station card shows its agents, what they're doing, and its tokens.
 Files slide along the thread when one agent hands them to another; a file going backwards is a fix loop.
-Below the flow, **Now** shows the agents at the busiest station, and the feed lists every step. Light and dark.
+Below the flow, **Now** shows who is working, the **Watchguard** watches for anything stuck and shows the quality card once it passes, and the feed lists every step. The header shows the Knit version and tells you when an update is out. Light and dark.
 No dependencies and no build step; it only listens on 127.0.0.1.
 
 ## Every run is logged and reported
@@ -201,6 +201,7 @@ The README graphics are drawn by `node scripts/build-assets.mjs` from the shared
 - [x] Docs in Notion
 - [x] Works in Codex, Cursor, OpenCode and Antigravity
 - [x] Knit Board: a live UI of the agents at work
+- [x] Version shown everywhere, update notice, Watchguard, quality card ([changelog](CHANGELOG.md))
 - [x] Solo by default: same cost as a plain session ([benchmark](docs/BENCHMARK.md))
 - [ ] Project templates (Next.js + FastAPI, Next.js full-stack, Expo mobile)
 - [ ] Hooks: block edits to `.env`, run lint and tests after each agent finishes

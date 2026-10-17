@@ -14,6 +14,8 @@
       <svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><path class="mark-a" d="M5 16c0-6 5-10 11-10s11 4 11 10"/><path class="mark-b" d="M27 16c0 6-5 10-11 10S5 22 5 16"/><circle class="mark-c" cx="16" cy="16" r="3.5"/></svg>
       <span class="title">Knit Board</span>
     </div>
+    <span class="chip version" id="version">Knit</span>
+    <a class="chip update" id="update" hidden href="https://github.com/jagdish3135/knit" target="_blank" rel="noopener"></a>
     <span class="chip" id="project">connecting…</span>
     <span class="chip" id="mode"></span>
     <span class="chip status"><span class="dot" id="status-dot"></span><span id="status">Waiting for events</span></span>
@@ -45,6 +47,30 @@
       <div class="row-head"><h2 id="now-title">Now</h2><span class="muted" id="now-msg"></span></div>
       <div class="agents" id="now-agents"></div>
       <div class="tokens" id="token-bars"></div>
+    </section>
+    <section class="panel guard-panel" id="guard-panel" aria-labelledby="guard-title">
+      <div class="guard-head">
+        <svg class="guard" viewBox="0 0 120 120" aria-hidden="true">
+          <circle class="ring" cx="60" cy="60" r="54"/>
+          <path class="sweep" d="M60 60 L60 6 A54 54 0 0 1 106.8 33 Z"/>
+          <path class="shield" d="M60 18 L94 30 V58 C94 80 79 95 60 102 C41 95 26 80 26 58 V30 Z"/>
+          <ellipse class="eye" cx="60" cy="58" rx="20" ry="12"/>
+          <circle class="pupil" cx="60" cy="58" r="6"/>
+          <path class="tick" d="M48 58 l8 8 l16 -17"/>
+        </svg>
+        <div>
+          <h2 id="guard-title">Watchguard</h2>
+          <div class="guard-state" id="guard-state">Watching</div>
+        </div>
+      </div>
+      <dl class="guard-facts">
+        <div><dt>Last activity</dt><dd id="guard-last">-</dd></div>
+        <div><dt>Running now</dt><dd id="guard-running">nothing</dd></div>
+      </dl>
+      <div class="guard-sub">Checks</div>
+      <ul class="guard-checks" id="guard-checks"><li class="muted">Appear as the team verifies its work.</li></ul>
+      <div class="guard-sub">Alerts</div>
+      <ul class="guard-alerts" id="guard-alerts"><li class="muted">None. Everything is moving.</li></ul>
     </section>
     <aside class="panel feed" aria-labelledby="feed-title">
       <div class="row-head"><h2 id="feed-title"><span class="dot live"></span>Live activity</h2></div>

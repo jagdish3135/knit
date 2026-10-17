@@ -12,6 +12,9 @@ Anything that doesn't make the product better or safer is waste.
 
 Knit lives at `<knit>` (scripts, board). Projects go in a sibling folder `../<name>` unless the user says otherwise.
 
+**Start your first reply with `Knit v<version> · solo mode` (or `team mode`)**, so the user always knows which Knit
+is running. (The installer fills in the number; if you see a placeholder instead, read `<knit>/VERSION`.)
+
 ## 1. Intake: one round of questions
 
 Ask once, with the host's question tool (Claude Code: `AskUserQuestion`; recommended option first, marked
@@ -55,6 +58,13 @@ progress line to the user. Keep context small: read only the files a task touche
 1. Run the full test suite, lint and build. Fix failures (Debugger hat: find the root cause first).
 2. Put on the **Reviewer** hat and go through the diff once with its checklist (bugs, security, lean, accessibility,
    polish). Fix what you find immediately. Don't write a review document; list the fixes in the run log.
+3. **Quality card.** This is what the user gets for Knit's few extra percent of tokens, so every item is checked for
+   real (run it, click it, measure it), never from memory. Mark each `pass`, `fail` or `n/a` with a short detail:
+   Tests · Build and lint · Core flow clicked in a browser · Light and dark theme with a working toggle ·
+   Phone width (360 px, no sideways scroll) · Empty, loading and error states · Keyboard and focus ·
+   Contrast and labels · Security basics (input validation, no secrets in code) · Lean pass · README with badge.
+   Fix every `fail` before shipping, or tell the user plainly why it stays. Log the card as one `quality` event
+   (`"items": [{"name", "status", "detail"}]`; the board's Watchguard shows it) and show it as a table in chat.
 
 ## 5. Ship
 
@@ -66,13 +76,27 @@ progress line to the user. Keep context small: read only the files a task touche
    switch to a hosted database first. Smoke-test the live URL. Add a small "Built with Knit" footer link to
    https://jagdish3135.github.io/knit/ in the app:
    `[![Built with Knit](https://jagdish3135.github.io/knit/badge.svg)](https://jagdish3135.github.io/knit/)`
-4. Write the reports: `node <knit>/scripts/knit-report.mjs <project>`. Notion only if the user asked: one summary
-   page at the end (plan + results), never a page per document.
+4. Write the reports: `node <knit>/scripts/knit-report.mjs <project>`. Notion only if the user asked (see below).
+
+## Notion docs (only when the user asked)
+
+At the end, publish to the **Projects** database on the **Knit Projects** page (search for it; if it's missing,
+create the page and a database with Name, Status, Mode, Tests, Tokens, Agent runs, Started, Repo).
+- One row per project, its page a short summary: goal, live URL, how to run, the quality card.
+- Three child pages under it: **Plan** (`plan.md`), **Quality** (quality card, test results, review fixes) and
+  **Run report** (`run-report.md` and the token report). Convert files with `node <knit>/scripts/notion-md.mjs <file>`.
+- **Every page starts with a nav bar** so readers never get stuck in a side peek: a line of page mentions,
+  `← Knit Projects · <Project> · Plan · Quality · Run report`, and the same line at the bottom.
+- Update the same pages on later builds; never create duplicates. Never put secrets or `.env` values in Notion.
 
 ## Watching the run (board and run log)
 
-- At intake, start the board in the background: `node <knit>/board/server.mjs <project>` (it serves
-  http://127.0.0.1:4321). If the host has a browser pane, open it there; otherwise give the user the link once.
+- At intake, start the board in the background: `node <knit>/board/server.mjs <project> --open`. It opens in the
+  user's own browser by itself (next free port from 4321). Read its first output lines: they give the URL, the Knit
+  version and, if there is one, an update notice. Pass the URL and any update notice on to the user in chat.
+- **Watchguard:** each time you check on a running command, server or agent, append a `watch` event
+  (`"status": "ok" | "warn" | "stuck"`, short `msg`). The board shows these, and raises its own alert when nothing
+  has happened for 5 minutes while work is running.
 - Append one-line JSON events to `<project>/.knit/events.jsonl` (format: `<knit>/docs/EVENTS.md`): a `phase` event
   per step, `agent_start`/`agent_end` when you switch hats (`agent` = the role's name, e.g. `frontend-dev`),
   `test`, `commit`, `gate`. Keep `msg` short. Solo mode has no per-agent token numbers; leave them out.

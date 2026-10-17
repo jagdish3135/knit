@@ -35,6 +35,8 @@ Append only; never rewrite earlier lines.
 | `test` | A test run finishes (`counts`) |
 | `review` | A review verdict or audit result |
 | `commit` | A wave is committed (`msg` = commit subject) |
+| `watch` | The Manager checked on running work (`status`: `ok`, `warn` or `stuck`); shown by the board's Watchguard |
+| `quality` | The quality card at the end of Check (`items`: list of `{name, status, detail}`, status `pass`, `fail` or `n/a`) |
 | `note` | Anything else worth keeping, e.g. a lesson for next time |
 
 ## Example

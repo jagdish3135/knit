@@ -38,7 +38,8 @@ const copySkill = (dir) => {
   const out = join(dir, "knit-build");
   cpSync(skill, out, { recursive: true });
   const file = join(out, "SKILL.md");
-  writeFileSync(file, readFileSync(file, "utf8").replaceAll("<knit>", knit.replace(/\\/g, "/")));
+  const version = readFileSync(join(knit, "VERSION"), "utf8").trim();
+  writeFileSync(file, readFileSync(file, "utf8").replaceAll("<knit>", knit.replace(/\\/g, "/")).replaceAll("<version>", version));
 };
 const can = (a, tool) => a.tools.includes(tool);
 const yamlStr = (s) => JSON.stringify(s); // a JSON string is a valid YAML double-quoted scalar

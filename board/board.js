@@ -29,7 +29,7 @@ const css = (v) => getComputedStyle(document.documentElement).getPropertyValue(v
 const color = (a) => (AGENTS[a] ? AGENTS[a][dark ? "dark" : "light"] : css("--muted"));
 
 let S;
-const reset = () => { S = { runs: {}, phase: -1, chunk: 0, gateOpen: false, gateDone: false, tests: null, first: null, last: null, focus: -1, msg: {}, mgr: "" }; };
+const reset = () => { S = { runs: {}, phase: -1, chunk: 0, gateOpen: false, gateDone: false, tests: null, first: null, last: null, focus: -1, msg: {}, mgr: "", quality: null, alerts: [], checks: [], lastSeen: performance.now() }; };
 reset();
 
 function stationFor(agent, phase) {
@@ -73,7 +73,12 @@ function apply(e) {
     case "gate":
       if (S.phase >= 3) { S.gateOpen = !e.result; S.gateDone = e.result === "approved"; note(GATE, e.msg); }
       break;
-    case "test": if (e.counts) S.tests = e.counts; break;
+    case "test":
+      if (e.counts) S.tests = e.counts;
+      S.checks.push({ name: e.msg ?? "Tests", status: e.counts?.failed ? "fail" : "pass" });
+      break;
+    case "quality": S.quality = Array.isArray(e.items) ? e.items : null; break;
+    case "watch": if (e.status === "ok") S.alerts = []; else if (e.status) S.alerts.push(e.msg ?? "Something needs a look"); break;
   }
   if (e.agent === "manager" || e.type === "decision") S.mgr = e.msg;
 }
@@ -180,8 +185,33 @@ function drawHeader() {
   $("status-dot").className = `dot ${S.gateOpen ? "waiting pulse" : busy ? "pulse" : ""}`;
 }
 
+// Watchguard: watches for silence and shows what has been verified.
+const SILENT_MS = 5 * 60 * 1000;
+function drawGuard() {
+  const now = performance.now(), quiet = now - S.lastSeen;
+  const running = Object.entries(S.runs).filter(([, r]) => r.state === "working").map(([a]) => nameOf(a));
+  const silent = running.length > 0 && quiet > SILENT_MS;
+  const done = S.quality && S.quality.every((q) => q.status !== "fail");
+  const failed = S.quality?.some((q) => q.status === "fail");
+  const state = silent || failed || S.alerts.length ? "alert" : done ? "done" : "watch";
+  $("guard-panel").className = `panel guard-panel ${state}`;
+  $("guard-state").textContent = { alert: silent ? `Silent for ${Math.round(quiet / 60000)} min` : failed ? "A check failed" : "Needs a look", done: "Verified", watch: running.length ? "Watching the work" : "Watching" }[state];
+  $("guard-last").textContent = S.first ? (quiet < 60000 ? `${Math.max(1, Math.round(quiet / 1000))}s ago` : `${Math.round(quiet / 60000)} min ago`) : "-";
+  $("guard-running").textContent = running.length ? running.join(", ") : "nothing";
+  const items = S.quality ?? S.checks.slice(-6);
+  $("guard-checks").replaceChildren(...(items.length ? items.map((q) => {
+    const li = el("li", q.status), mark = el("span", "mark", q.status === "pass" ? "✓" : q.status === "fail" ? "✗" : "–");
+    li.append(mark, el("span", "", q.name), q.detail ? el("span", "detail", q.detail) : "");
+    return li;
+  }) : [el("li", "muted", "Appear as the team verifies its work.")]));
+  const alerts = [...S.alerts.slice(-3)];
+  if (silent) alerts.push(`No activity for ${Math.round(quiet / 60000)} min while ${running.join(", ")} ${running.length > 1 ? "are" : "is"} working.`);
+  $("guard-alerts").replaceChildren(...(alerts.length ? alerts.map((a) => el("li", "", a)) : [el("li", "muted", "None. Everything is moving.")]));
+}
+setInterval(() => drawGuard(), 5000);
+
 let queued = false;
-const render = () => { if (queued) return; queued = true; requestAnimationFrame(() => { queued = false; drawHeader(); drawStations(); drawNow(); }); };
+const render = () => { if (queued) return; queued = true; requestAnimationFrame(() => { queued = false; drawHeader(); drawStations(); drawNow(); drawGuard(); }); };
 
 function slide(e) {
   const cards = $("stations").children, rail = $("rail").getBoundingClientRect();
@@ -213,11 +243,18 @@ applyTheme();
 
 let lastArrival = 0;
 const source = new EventSource("/stream");
-source.addEventListener("meta", (m) => { const d = JSON.parse(m.data); $("project").textContent = `${d.project}${d.replay ? " · replay" : ""}`; });
+source.addEventListener("meta", (m) => {
+  const d = JSON.parse(m.data);
+  $("project").textContent = `${d.project}${d.replay ? " · replay" : ""}`;
+  $("version").textContent = `Knit v${d.version}`;
+  document.title = `Knit v${d.version} · ${d.project}`;
+  if (d.latest) { $("update").hidden = false; $("update").textContent = `Update: v${d.latest}`; $("update").title = `Knit ${d.latest} is available. In the knit folder: git pull, then node scripts/install.mjs claude --global`; }
+});
 source.addEventListener("reset", () => { reset(); $("feed").replaceChildren(); render(); });
 source.addEventListener("event", (m) => {
   const e = JSON.parse(m.data), now = performance.now(), fresh = now - lastArrival > 120;
   lastArrival = now;
+  S.lastSeen = now;
   apply(e);
   feed(e, fresh);
   render();
