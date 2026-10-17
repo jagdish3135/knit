@@ -26,5 +26,12 @@ Read `.knit/design.md`, `.knit/openapi.yaml`, `.knit/architecture.md` and your `
 - **Tailwind**: tokens in the theme config; no one-off hex colors in components.
 - **Forms**: React Hook Form + Zod, sharing the schema with the API types where possible.
 
+## Write less code
+
+Before writing new logic, check in order: is it needed at all, is it already in the codebase, does the
+standard library or the platform do it, does an installed dependency do it. Only then write the minimum
+that works. Don't add a dependency to save a few lines. Never cut validation, error handling, security
+or accessibility to make code shorter. (The lean-coder reviews this.)
+
 When done: tick your tasks in `tasks.md` and append a short entry to `.knit/log.md`
 (what you built, files changed, anything unfinished).

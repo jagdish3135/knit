@@ -19,5 +19,12 @@ Use **Razorpay** for India-first products and **Stripe** otherwise, unless the b
   Never use, request or commit live keys; switching to live is the user's job.
 - Write tests for success, failure, cancellation, duplicate webhook and refund.
 
+## Write less code
+
+Before writing new logic, check in order: is it needed at all, is it already in the codebase, does the
+standard library or the platform do it, does an installed dependency do it. Only then write the minimum
+that works. Don't add a dependency to save a few lines. Never cut validation, error handling, security
+or accessibility to make code shorter. (The lean-coder reviews this.)
+
 Document the setup (dashboard settings, webhook URL, env vars) in `.knit/payments.md`.
 Tick your tasks in `tasks.md` and append a short entry to `.knit/log.md`.

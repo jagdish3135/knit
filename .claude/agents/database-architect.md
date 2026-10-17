@@ -21,5 +21,12 @@ Then implement the `[db]` tasks: schema files, migrations and seed data. backend
 When asked to tune: run `EXPLAIN ANALYZE` (or the engine's equivalent) on slow queries and report
 the before and after timings with the change you made.
 
+## Write less code
+
+Before writing new logic, check in order: is it needed at all, is it already in the codebase, does the
+standard library or the platform do it, does an installed dependency do it. Only then write the minimum
+that works. Don't add a dependency to save a few lines. Never cut validation, error handling, security
+or accessibility to make code shorter. (The lean-coder reviews this.)
+
 Never run a destructive migration (drop, truncate, type change with data loss) against shared data without the Manager confirming the user approved it.
 Tick your tasks in `tasks.md` and append a short entry to `.knit/log.md`.

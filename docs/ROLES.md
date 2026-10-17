@@ -68,6 +68,7 @@ from scratch; these projects were used as references, not copied.
 | Manager (skill) | MetaGPT Team Leader, ChatDev CEO, wshobson team-lead, VoltAgent multi-agent-coordinator | Gates, final validation of every acceptance criterion (wshobson conductor-validator) |
 | product-manager | MetaGPT Product Manager, ChatDev CPO, VoltAgent product-manager | PRD with numbered stories before any design (MetaGPT SOP) |
 | architect | MetaGPT Architect, ChatDev CTO, wshobson backend-architect | API-first contract, Mermaid diagrams |
+| lean-coder | [DietrichGebert/ponytail](https://github.com/DietrichGebert/ponytail) (MIT), VoltAgent refactoring-specialist | The reuse-first ladder, plan check and trim review |
 | ux-designer | ChatDev CCO, wshobson ui-ux-designer and ui-visual-validator | Design system tokens, screenshot visual check |
 | frontend-dev | wshobson frontend-developer, VoltAgent nextjs/react specialists | Stack-specific rules |
 | backend-dev | MetaGPT Engineer, VoltAgent backend-developer, auth-integration-engineer | Auth and migration rules |

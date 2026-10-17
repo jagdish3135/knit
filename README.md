@@ -10,9 +10,10 @@ their output, and loops through testing and review until the project works.
 
 | # | Agent | File | Model | Job |
 |---|---|---|---|---|
-| 1 | Manager | [`skills/knit/SKILL.md`](.claude/skills/knit/SKILL.md) | your session | Intake, gates, delegation, debug and review loops, final validation |
+| 1 | Manager | [`skills/knit/SKILL.md`](.claude/skills/knit/SKILL.md) | your session | Multiple-choice intake, build mode, gates, delegation, debug and review loops, final validation |
 | 2 | Product Manager | [`product-manager.md`](.claude/agents/product-manager.md) | opus | PRD, `US-` user stories, acceptance criteria |
-| 3 | Architect | [`architect.md`](.claude/agents/architect.md) | opus | Architecture, `openapi.yaml` contract, tasks, specialists needed |
+| 3 | Architect | [`architect.md`](.claude/agents/architect.md) | opus | Architecture, `openapi.yaml` contract, tasks (grouped into chunks), specialists needed |
+| 3b | Lean Coder | [`lean-coder.md`](.claude/agents/lean-coder.md) | sonnet | Checks the plan and the code for anything that needn't be written; inspired by [Ponytail](https://github.com/DietrichGebert/ponytail) |
 | 4 | UI/UX Designer | [`ux-designer.md`](.claude/agents/ux-designer.md) | sonnet | Flows, screens, design system and tokens, visual check |
 | 5 | Frontend Developer | [`frontend-dev.md`](.claude/agents/frontend-dev.md) | sonnet | Web UI from the design and API contract |
 | 6 | Backend Developer | [`backend-dev.md`](.claude/agents/backend-dev.md) | sonnet | API, auth, data access, migrations |
@@ -74,7 +75,17 @@ project's `.knit/` folder (`prd.md`, `architecture.md`, `openapi.yaml`, `tasks.m
 1. Open a Claude Code session in this `knit` folder (so the agents and skill load).
 2. Run `/knit` and describe the project, e.g.
    `/knit Build a habit tracker web app with login, daily check-ins and streak stats`.
-3. The Manager writes the brief, gets the PRD and plan ready, and asks for your go-ahead.
+3. The Manager asks a few multiple-choice questions (product type, users, build mode, stack, must-haves),
+   writes the brief, gets the PRD and plan ready, and asks for your go-ahead.
+
+### Build mode: in chunks or whole project
+
+| | In chunks (default) | Whole project |
+|---|---|---|
+| Best for | Anything bigger than a small app | Small, well-defined apps |
+| How | Chunk 0 foundation, then thin end-to-end slices of 1 to 4 stories each | One plan, one build |
+| You see working software | After chunk 1, then after every chunk | At the end |
+| Your approval | After the plan, after every chunk, before release | After the plan, first build, before release |
 
 New projects are created as sibling folders (`../<project-name>`) unless you say otherwise.
 
@@ -91,6 +102,12 @@ repo, or into `~/.claude/` to make them available everywhere.
 
 - [x] Agent roster and Manager playbook
 - [x] Product Manager, Debugger and 8 optional specialists; paired review loop; model per agent
+- [x] Multiple-choice intake, chunk / whole-project build mode, Lean Coder agent
+- [x] First test run: a habit tracker built end to end (197 unit/API tests, 112 e2e)
+- [ ] Notion documentation, run report and token usage report
+- [ ] Visual README (logo, diagrams, animated flow)
+- [ ] Works in Codex, Cursor, OpenCode and Antigravity
+- [ ] Knit Board: live UI of agents at work
 - [ ] Project templates (Next.js + FastAPI, Next.js full-stack, Expo mobile)
 - [ ] Extra skills: `api-contract`, `test-plan`, `threat-model`, `release-checklist`
 - [ ] Hooks: block edits to `.env`, run lint/tests after each agent finishes
