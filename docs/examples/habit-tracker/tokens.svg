@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="760" height="388" viewBox="0 0 760 388" role="img" aria-label="Tokens by agent, 2.16M in total">
+<style>
+.bg{fill:#FFFFFF}.t{fill:#16181D;font:600 16px system-ui,sans-serif}.l{fill:#16181D;font:13px system-ui,sans-serif}.v{fill:#525965;font:12px ui-monospace,monospace}.track{fill:#EFEBE2}
+.b0{fill:#0B7D8C}.b1{fill:#5644CC}.b2{fill:#4A5563}.b3{fill:#1B7F57}.b4{fill:#B8332C}.b5{fill:#7A5A30}.b6{fill:#AD2F76}.b7{fill:#2B5FC2}.b8{fill:#7E43BA}.b9{fill:#A85A00}.b10{fill:#B4461F}
+@media (prefers-color-scheme: dark){.bg{fill:#151A22}.t,.l{fill:#E9EDF3}.v{fill:#A3AEBD}.track{fill:#232B37}.b0{fill:#4FD6E8}.b1{fill:#9B8CFF}.b2{fill:#C3CEDB}.b3{fill:#5AD1A0}.b4{fill:#FF6B6B}.b5{fill:#E8C9A0}.b6{fill:#FF7AC6}.b7{fill:#6EA8FF}.b8{fill:#D4A5FF}.b9{fill:#FFB347}.b10{fill:#FF8A5B}}
+</style>
+<rect class="bg" width="760" height="388" rx="14"/>
+<text class="t" x="20" y="32">Tokens by agent · habit-tracker · 2.16M total</text>
+<text class="l" x="20" y="71">frontend-dev</text><rect class="track" x="170" y="60" width="480" height="14" rx="7"/><rect class="b0" x="170" y="60" width="480" height="14" rx="7"/><text class="v" x="740" y="71" text-anchor="end">417k</text>
+<text class="l" x="20" y="99">backend-dev</text><rect class="track" x="170" y="88" width="480" height="14" rx="7"/><rect class="b1" x="170" y="88" width="305" height="14" rx="7"/><text class="v" x="740" y="99" text-anchor="end">265k</text>
+<text class="l" x="20" y="127">code-reviewer</text><rect class="track" x="170" y="116" width="480" height="14" rx="7"/><rect class="b2" x="170" y="116" width="270" height="14" rx="7"/><text class="v" x="740" y="127" text-anchor="end">235k</text>
+<text class="l" x="20" y="155">tester</text><rect class="track" x="170" y="144" width="480" height="14" rx="7"/><rect class="b3" x="170" y="144" width="231" height="14" rx="7"/><text class="v" x="740" y="155" text-anchor="end">201k</text>
+<text class="l" x="20" y="183">security-reviewer</text><rect class="track" x="170" y="172" width="480" height="14" rx="7"/><rect class="b4" x="170" y="172" width="228" height="14" rx="7"/><text class="v" x="740" y="183" text-anchor="end">198k</text>
+<text class="l" x="20" y="211">tech-writer</text><rect class="track" x="170" y="200" width="480" height="14" rx="7"/><rect class="b5" x="170" y="200" width="225" height="14" rx="7"/><text class="v" x="740" y="211" text-anchor="end">195k</text>
+<text class="l" x="20" y="239">ux-designer</text><rect class="track" x="170" y="228" width="480" height="14" rx="7"/><rect class="b6" x="170" y="228" width="192" height="14" rx="7"/><text class="v" x="740" y="239" text-anchor="end">167k</text>
+<text class="l" x="20" y="267">architect</text><rect class="track" x="170" y="256" width="480" height="14" rx="7"/><rect class="b7" x="170" y="256" width="191" height="14" rx="7"/><text class="v" x="740" y="267" text-anchor="end">166k</text>
+<text class="l" x="20" y="295">devops</text><rect class="track" x="170" y="284" width="480" height="14" rx="7"/><rect class="b8" x="170" y="284" width="151" height="14" rx="7"/><text class="v" x="740" y="295" text-anchor="end">131k</text>
+<text class="l" x="20" y="323">debugger</text><rect class="track" x="170" y="312" width="480" height="14" rx="7"/><rect class="b9" x="170" y="312" width="130" height="14" rx="7"/><text class="v" x="740" y="323" text-anchor="end">113k</text>
+<text class="l" x="20" y="351">product-manager</text><rect class="track" x="170" y="340" width="480" height="14" rx="7"/><rect class="b10" x="170" y="340" width="84" height="14" rx="7"/><text class="v" x="740" y="351" text-anchor="end">72k</text>
+</svg>

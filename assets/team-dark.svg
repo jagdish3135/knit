@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="520" viewBox="0 0 960 520" role="img" aria-label="The Knit team: the Manager, 12 core agents and 8 optional specialists" font-family="ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif">
+<rect width="960" height="520" rx="18" fill="#0D1117" stroke="#2A3340"/>
+<text x="32" y="46" font-size="22" font-weight="700" fill="#E9EDF3">The team</text>
+<text x="140" y="46" font-size="15" fill="#A3AEBD">every agent has its own shape, so you can tell them apart without color</text>
+<circle cx="72" cy="130" r="36" fill="#151A22" stroke="#2A3340" stroke-width="2"/>
+<circle cx="72" cy="130" r="36" fill="none" stroke="#F2C230" stroke-width="3" stroke-dasharray="40 186" stroke-linecap="round"><animateTransform attributeName="transform" type="rotate" from="0 72 130" to="360 72 130" dur="6s" repeatCount="indefinite"/></circle>
+<g transform="translate(55 113) scale(1.4166666666666667)" fill="none" stroke="#F2C230" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.5l8.2 4.75v9.5L12 21.5l-8.2-4.75v-9.5z"/><path d="M8.5 12h7M12 8.5v7"/></g>
+<text x="72" y="192" font-size="14" font-weight="600" text-anchor="middle" fill="#E9EDF3">Manager</text>
+<circle cx="208" cy="130" r="36" fill="#151A22" stroke="#2A3340" stroke-width="2"/>
+<circle cx="208" cy="130" r="36" fill="none" stroke="#FF8A5B" stroke-width="3" stroke-dasharray="40 186" stroke-linecap="round"><animateTransform attributeName="transform" type="rotate" from="0 208 130" to="360 208 130" dur="7s" repeatCount="indefinite"/></circle>
+<g transform="translate(191 113) scale(1.4166666666666667)" fill="none" stroke="#FF8A5B" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a9 9 0 1 0 0.01 0z"/><path d="M12 8a4 4 0 1 0 0.01 0z"/></g>
+<text x="208" y="192" font-size="14" font-weight="600" text-anchor="middle" fill="#E9EDF3">Product Manager</text>
+<circle cx="344" cy="130" r="36" fill="#151A22" stroke="#2A3340" stroke-width="2"/>
+<circle cx="344" cy="130" r="36" fill="none" stroke="#6EA8FF" stroke-width="3" stroke-dasharray="40 186" stroke-linecap="round"><animateTransform attributeName="transform" type="rotate" from="0 344 130" to="360 344 130" dur="8s" repeatCount="indefinite"/></circle>
+<g transform="translate(327 113) scale(1.4166666666666667)" fill="none" stroke="#6EA8FF" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.5L21 20H3z"/><path d="M7.5 15h9M12 10v5"/></g>
+<text x="344" y="192" font-size="14" font-weight="600" text-anchor="middle" fill="#E9EDF3">Architect</text>
+<circle cx="480" cy="130" r="36" fill="#151A22" stroke="#2A3340" stroke-width="2"/>
+<circle cx="480" cy="130" r="36" fill="none" stroke="#C7F264" stroke-width="3" stroke-dasharray="40 186" stroke-linecap="round"><animateTransform attributeName="transform" type="rotate" from="0 480 130" to="360 480 130" dur="9s" repeatCount="indefinite"/></circle>
+<g transform="translate(463 113) scale(1.4166666666666667)" fill="none" stroke="#C7F264" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 4.5a2.5 2.5 0 1 0 0.01 0zM6 14.5a2.5 2.5 0 1 0 0.01 0z"/><path d="M8.2 8.2L20 17M8.2 15.8L20 7"/></g>
+<text x="480" y="192" font-size="14" font-weight="600" text-anchor="middle" fill="#E9EDF3">Lean Coder</text>
+<circle cx="616" cy="130" r="36" fill="#151A22" stroke="#2A3340" stroke-width="2"/>
+<circle cx="616" cy="130" r="36" fill="none" stroke="#FF7AC6" stroke-width="3" stroke-dasharray="40 186" stroke-linecap="round"><animateTransform attributeName="transform" type="rotate" from="0 616 130" to="360 616 130" dur="6s" repeatCount="indefinite"/></circle>
+<g transform="translate(599 113) scale(1.4166666666666667)" fill="none" stroke="#FF7AC6" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 8-7 10-7-10z"/><path d="M12 11v4"/></g>
+<text x="616" y="192" font-size="14" font-weight="600" text-anchor="middle" fill="#E9EDF3">UI/UX Designer</text>
+<circle cx="752" cy="130" r="36" fill="#151A22" stroke="#2A3340" stroke-width="2"/>
+<circle cx="752" cy="130" r="36" fill="none" stroke="#4FD6E8" stroke-width="3" stroke-dasharray="40 186" stroke-linecap="round"><animateTransform attributeName="transform" type="rotate" from="0 752 130" to="360 752 130" dur="7s" repeatCount="indefinite"/></circle>
+<g transform="translate(735 113) scale(1.4166666666666667)" fill="none" stroke="#4FD6E8" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 5h18v14H3z"/><path d="M3 9h18M9 13l-2 2 2 2M15 13l2 2-2 2"/></g>
+<text x="752" y="192" font-size="14" font-weight="600" text-anchor="middle" fill="#E9EDF3">Frontend Dev</text>
+<circle cx="888" cy="130" r="36" fill="#151A22" stroke="#2A3340" stroke-width="2"/>
+<circle cx="888" cy="130" r="36" fill="none" stroke="#9B8CFF" stroke-width="3" stroke-dasharray="40 186" stroke-linecap="round"><animateTransform attributeName="transform" type="rotate" from="0 888 130" to="360 888 130" dur="8s" repeatCount="indefinite"/></circle>
+<g transform="translate(871 113) scale(1.4166666666666667)" fill="none" stroke="#9B8CFF" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16v5H4zM4 14h16v5H4z"/><path d="M7.5 7.5h.01M7.5 16.5h.01"/></g>
+<text x="888" y="192" font-size="14" font-weight="600" text-anchor="middle" fill="#E9EDF3">Backend Dev</text>
+<circle cx="140" cy="280" r="36" fill="#151A22" stroke="#2A3340" stroke-width="2"/>
+<circle cx="140" cy="280" r="36" fill="none" stroke="#D4A5FF" stroke-width="3" stroke-dasharray="40 186" stroke-linecap="round"><animateTransform attributeName="transform" type="rotate" from="0 140 280" to="360 140 280" dur="9s" repeatCount="indefinite"/></circle>
+<g transform="translate(123 263) scale(1.4166666666666667)" fill="none" stroke="#D4A5FF" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 8a4 4 0 1 0 0 8c3 0 7-8 10-8a4 4 0 1 1 0 8c-3 0-7-8-10-8z"/></g>
+<text x="140" y="342" font-size="14" font-weight="600" text-anchor="middle" fill="#E9EDF3">DevOps</text>
+<circle cx="276" cy="280" r="36" fill="#151A22" stroke="#2A3340" stroke-width="2"/>
+<circle cx="276" cy="280" r="36" fill="none" stroke="#5AD1A0" stroke-width="3" stroke-dasharray="40 186" stroke-linecap="round"><animateTransform attributeName="transform" type="rotate" from="0 276 280" to="360 276 280" dur="6s" repeatCount="indefinite"/></circle>
+<g transform="translate(259 263) scale(1.4166666666666667)" fill="none" stroke="#5AD1A0" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h6M10 3v6l-5 10h14l-5-10V3"/><path d="M7.5 15h9"/></g>
+<text x="276" y="342" font-size="14" font-weight="600" text-anchor="middle" fill="#E9EDF3">Tester</text>
+<circle cx="412" cy="280" r="36" fill="#151A22" stroke="#2A3340" stroke-width="2"/>
+<circle cx="412" cy="280" r="36" fill="none" stroke="#FFB347" stroke-width="3" stroke-dasharray="40 186" stroke-linecap="round"><animateTransform attributeName="transform" type="rotate" from="0 412 280" to="360 412 280" dur="7s" repeatCount="indefinite"/></circle>
+<g transform="translate(395 263) scale(1.4166666666666667)" fill="none" stroke="#FFB347" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 9a4 4 0 0 1 8 0v6a4 4 0 0 1-8 0z"/><path d="M4 12h4M16 12h4M5 7l3 2M19 7l-3 2M5 18l3-2M19 18l-3-2"/></g>
+<text x="412" y="342" font-size="14" font-weight="600" text-anchor="middle" fill="#E9EDF3">Debugger</text>
+<circle cx="548" cy="280" r="36" fill="#151A22" stroke="#2A3340" stroke-width="2"/>
+<circle cx="548" cy="280" r="36" fill="none" stroke="#C3CEDB" stroke-width="3" stroke-dasharray="40 186" stroke-linecap="round"><animateTransform attributeName="transform" type="rotate" from="0 548 280" to="360 548 280" dur="8s" repeatCount="indefinite"/></circle>
+<g transform="translate(531 263) scale(1.4166666666666667)" fill="none" stroke="#C3CEDB" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/><path d="M12 9.5a2.5 2.5 0 1 0 0.01 0z"/></g>
+<text x="548" y="342" font-size="14" font-weight="600" text-anchor="middle" fill="#E9EDF3">Code Reviewer</text>
+<circle cx="684" cy="280" r="36" fill="#151A22" stroke="#2A3340" stroke-width="2"/>
+<circle cx="684" cy="280" r="36" fill="none" stroke="#FF6B6B" stroke-width="3" stroke-dasharray="40 186" stroke-linecap="round"><animateTransform attributeName="transform" type="rotate" from="0 684 280" to="360 684 280" dur="9s" repeatCount="indefinite"/></circle>
+<g transform="translate(667 263) scale(1.4166666666666667)" fill="none" stroke="#FF6B6B" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/><path d="M9 12l2 2 4-4"/></g>
+<text x="684" y="342" font-size="14" font-weight="600" text-anchor="middle" fill="#E9EDF3">Security Reviewer</text>
+<circle cx="820" cy="280" r="36" fill="#151A22" stroke="#2A3340" stroke-width="2"/>
+<circle cx="820" cy="280" r="36" fill="none" stroke="#E8C9A0" stroke-width="3" stroke-dasharray="40 186" stroke-linecap="round"><animateTransform attributeName="transform" type="rotate" from="0 820 280" to="360 820 280" dur="6s" repeatCount="indefinite"/></circle>
+<g transform="translate(803 263) scale(1.4166666666666667)" fill="none" stroke="#E8C9A0" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h9l4 4v14H6z"/><path d="M9 11h7M9 15h7M9 7h4"/></g>
+<text x="820" y="342" font-size="14" font-weight="600" text-anchor="middle" fill="#E9EDF3">Tech Writer</text>
+<line x1="32" y1="392" x2="928" y2="392" stroke="#2A3340"/>
+<text x="32" y="418" font-size="13" font-weight="600" fill="#A3AEBD">ON CALL · only when a project needs them</text>
+<circle cx="70" cy="452" r="22" fill="none" stroke="#36404D" stroke-width="1.5" stroke-dasharray="3 4"/>
+<g transform="translate(59 441) scale(0.9166666666666666)" fill="none" stroke="#8FE3FF" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a9 9 0 1 0 0.01 0z"/><path d="M15.5 8.5l-2 5-5 2 2-5z"/></g>
+<text x="70" y="492" font-size="12" text-anchor="middle" fill="#A3AEBD">UX Researcher</text>
+<circle cx="187" cy="452" r="22" fill="none" stroke="#36404D" stroke-width="1.5" stroke-dasharray="3 4"/>
+<g transform="translate(176 441) scale(0.9166666666666666)" fill="none" stroke="#A6F0A6" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4a1.6 1.6 0 1 0 0.01 0z"/><path d="M5 9h14M12 9v5M9 21l3-7 3 7"/></g>
+<text x="187" y="492" font-size="12" text-anchor="middle" fill="#A3AEBD">Accessibility</text>
+<circle cx="304" cy="452" r="22" fill="none" stroke="#36404D" stroke-width="1.5" stroke-dasharray="3 4"/>
+<g transform="translate(293 441) scale(0.9166666666666666)" fill="none" stroke="#FFB8DC" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 6c0-1.7 3.1-3 7-3s7 1.3 7 3v12c0 1.7-3.1 3-7 3s-7-1.3-7-3z"/><path d="M5 6c0 1.7 3.1 3 7 3s7-1.3 7-3M5 12c0 1.7 3.1 3 7 3s7-1.3 7-3"/></g>
+<text x="304" y="492" font-size="12" text-anchor="middle" fill="#A3AEBD">Database Architect</text>
+<circle cx="421" cy="452" r="22" fill="none" stroke="#36404D" stroke-width="1.5" stroke-dasharray="3 4"/>
+<g transform="translate(410 441) scale(0.9166666666666666)" fill="none" stroke="#9FE7D8" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 2.5h10v19H7z"/><path d="M11 18h2"/></g>
+<text x="421" y="492" font-size="12" text-anchor="middle" fill="#A3AEBD">Mobile Dev</text>
+<circle cx="538" cy="452" r="22" fill="none" stroke="#36404D" stroke-width="1.5" stroke-dasharray="3 4"/>
+<g transform="translate(527 441) scale(0.9166666666666666)" fill="none" stroke="#FFE08A" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l2.5 6.5L21 12l-6.5 2.5L12 21l-2.5-6.5L3 12l6.5-2.5z"/></g>
+<text x="538" y="492" font-size="12" text-anchor="middle" fill="#A3AEBD">AI/LLM Engineer</text>
+<circle cx="655" cy="452" r="22" fill="none" stroke="#36404D" stroke-width="1.5" stroke-dasharray="3 4"/>
+<g transform="translate(644 441) scale(0.9166666666666666)" fill="none" stroke="#FF9E80" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 17a8 8 0 1 1 16 0"/><path d="M12 17l4-5"/></g>
+<text x="655" y="492" font-size="12" text-anchor="middle" fill="#A3AEBD">Performance</text>
+<circle cx="772" cy="452" r="22" fill="none" stroke="#36404D" stroke-width="1.5" stroke-dasharray="3 4"/>
+<g transform="translate(761 441) scale(0.9166666666666666)" fill="none" stroke="#A8D8FF" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18v12H3z"/><path d="M3 10h18M7 15h4"/></g>
+<text x="772" y="492" font-size="12" text-anchor="middle" fill="#A3AEBD">Payments</text>
+<circle cx="889" cy="452" r="22" fill="none" stroke="#36404D" stroke-width="1.5" stroke-dasharray="3 4"/>
+<g transform="translate(878 441) scale(0.9166666666666666)" fill="none" stroke="#D0F08A" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a9 9 0 1 0 0.01 0z"/><path d="M3 12h18M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18"/></g>
+<text x="889" y="492" font-size="12" text-anchor="middle" fill="#A3AEBD">SEO / Content</text>
+</svg>

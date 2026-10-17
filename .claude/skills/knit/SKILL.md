@@ -60,6 +60,7 @@ Tailor the options to the idea (e.g. for a "habit tracker", offer habit-tracker-
 | Where does the data live? | Only on this computer · Hosted database · An existing database or API |
 | Anything extra? (multiSelect) | Payments · AI features · Mobile app too · Marketing / SEO pages |
 | Where will it run? | Only locally for now · Vercel · Another cloud · Decide later |
+| Keep the docs in Notion? (only when a Notion connector is available) | **Yes (Recommended)** · No, files only |
 
 Then:
 1. Ask in plain text only for what options can't capture: the project name (offer a suggestion) and
@@ -70,6 +71,9 @@ Then:
 3. Map answers to specialists: Payments → payment-integration, AI → ai-engineer, Mobile → mobile-developer,
    Marketing/SEO → seo-content-writer, public users → accessibility-tester. If the users or the problem
    still feel vague, spawn `ux-researcher` first (writes `ux-research.md`).
+
+4. Start the run log (see "Run log and reports") with a `phase` event for intake.
+   If the user chose Notion, create the project's Notion page now (see "Docs in Notion").
 
 ## Build mode: in chunks or whole project
 
@@ -152,12 +156,51 @@ and what the next chunk is. Continue, adjust the remaining chunks, or stop, as t
    has a passing test in `test-report.md`. List anything not met.
 4. **Gate 3:** report to the user: what was built, how to run it, what is not done, open risks.
    Only after the user approves: `devops` pushes and deploys with a smoke test (`deploy.md`).
+5. Write the reports (`run-report.md`, `token-report.md`, `tokens.svg`) and, if Notion is on, publish the final pages.
+
+## Run log and reports
+
+Log every step in `<project>/.knit/events.jsonl`, one JSON object per line, in the format in Knit's
+`docs/EVENTS.md`. Append only. Log at least: each phase or chunk start, every agent start and hand-back,
+every handoff file, every gate and decision, every test run, review verdict and commit.
+
+- On each agent hand-back, copy the usage the host reports (tokens, tool uses, duration) into the
+  `agent_end` event. For an agent resumed several times, log the growth since its previous hand-back.
+- At every gate and at the end, run `node <knit>/scripts/knit-report.mjs <project>` (Node 18+, no dependencies).
+  It writes `run-report.md` (how the team worked together), `token-report.md` and `tokens.svg`.
+- Show the user the headline numbers at each gate: agent runs, tokens, agent time, tests.
+- Add `note` events for lessons worth keeping (what slowed the run down, what to do differently).
+
+## Docs in Notion
+
+Only when the host has a Notion connector and the user said yes at intake. The `.knit/` files stay the
+source of truth; Notion is the readable copy for people. Never put secrets, keys or `.env` values in Notion.
+
+1. **Hub:** find the page **Knit Projects** in the user's workspace (search for it). If it doesn't exist,
+   create it as a private page with a **Projects** database: Name (title), Status (Planning, Building,
+   Verifying, Shipped, Paused), Mode (In chunks, Whole project), Current step (text), Tests (text),
+   Tokens (number), Started (date), Repo (URL).
+2. **Project page:** one database row per project, with a short summary (goal, users, mode, stack,
+   how to run) and these child pages:
+   - **Brief and PRD**: `brief.md` with the intake answers, and `prd.md`
+   - **Plan**: `architecture.md` (keep Mermaid diagrams as code blocks), `tasks.md` grouped by chunk, the API contract summary
+   - **Design**: `design.md`
+   - **Quality**: `test-report.md`, `review.md`, `lean-review.md`, `security-report.md`
+   - **Run report**: `run-report.md`
+   - **Token usage**: `token-report.md` as a table
+   Convert a `.knit/` file before sending it: `node <knit>/scripts/notion-md.mjs <file.md>` turns Markdown
+   tables into Notion tables and escapes characters Notion treats as markup. Summarize very long files
+   (over ~25 KB, e.g. a full design system) instead of pasting them whole, and say where the full file lives.
+3. **When to sync:** after Gate 1 (brief, PRD, plan, design), after every chunk gate (quality, run report,
+   token usage, row properties), and at release (everything). Update pages in place; don't create duplicates.
+4. Give the user the project page link at each gate.
 
 ## Handoff files (`<project>/.knit/`)
 
 | File | Written by |
 |---|---|
 | `brief.md` | Manager (includes intake answers and build mode) |
+| `events.jsonl`, `run-report.md`, `token-report.md`, `tokens.svg` | Manager (run log and reports) |
 | `ux-research.md` | ux-researcher |
 | `prd.md` | product-manager |
 | `architecture.md`, `openapi.yaml`, `tasks.md` | architect |

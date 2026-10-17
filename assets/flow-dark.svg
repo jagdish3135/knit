@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1010" height="300" viewBox="0 0 1010 300" role="img" aria-label="How Knit works: intake, requirements, plan, then design, build, verify and your OK for each chunk, then ship" font-family="ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif">
+<rect width="1010" height="300" rx="18" fill="#0D1117" stroke="#2A3340"/>
+<rect x="410" y="52" width="460" height="188" rx="16" fill="none" stroke="#2A3340" stroke-width="1.5" stroke-dasharray="6 6"/>
+<text x="426" y="76" font-size="13" font-weight="600" fill="#A3AEBD">EACH CHUNK · repeat until done</text>
+<line x1="70" y1="120" x2="940" y2="120" stroke="#2A3340" stroke-width="2"/>
+<path id="loop" d="M820 152 C820 250 460 250 460 152" fill="none" stroke="#2A3340" stroke-width="2" stroke-dasharray="5 6"/>
+<circle r="5" fill="#F2C230"><animateMotion dur="3s" repeatCount="indefinite" path="M820 152 C820 250 460 250 460 152"/></circle>
+<circle cx="70" cy="120" r="30" fill="none" stroke="#F2C230" stroke-width="2"><animate attributeName="r" dur="10s" repeatCount="indefinite" keyTimes="0;0.000;0.080;1" values="30;30;46;46"/><animate attributeName="opacity" dur="10s" repeatCount="indefinite" keyTimes="0;0.000;0.080;1" values="0;0.8;0;0"/></circle>
+<circle cx="70" cy="120" r="30" fill="#151A22" stroke="#F2C230" stroke-width="2.5"/>
+<g transform="translate(55 105) scale(1.25)" fill="none" stroke="#F2C230" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.5l8.2 4.75v9.5L12 21.5l-8.2-4.75v-9.5z"/><path d="M8.5 12h7M12 8.5v7"/></g>
+<text x="70" y="176" font-size="14" font-weight="600" text-anchor="middle" fill="#E9EDF3">Intake</text>
+<circle cx="190" cy="120" r="30" fill="none" stroke="#FF8A5B" stroke-width="2"><animate attributeName="r" dur="10s" repeatCount="indefinite" keyTimes="0;0.138;0.218;1" values="30;30;46;46"/><animate attributeName="opacity" dur="10s" repeatCount="indefinite" keyTimes="0;0.138;0.218;1" values="0;0.8;0;0"/></circle>
+<circle cx="190" cy="120" r="30" fill="#151A22" stroke="#FF8A5B" stroke-width="2.5"/>
+<g transform="translate(175 105) scale(1.25)" fill="none" stroke="#FF8A5B" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a9 9 0 1 0 0.01 0z"/><path d="M12 8a4 4 0 1 0 0.01 0z"/></g>
+<text x="190" y="176" font-size="14" font-weight="600" text-anchor="middle" fill="#E9EDF3">Requirements</text>
+<circle cx="310" cy="120" r="30" fill="none" stroke="#6EA8FF" stroke-width="2"><animate attributeName="r" dur="10s" repeatCount="indefinite" keyTimes="0;0.276;0.356;1" values="30;30;46;46"/><animate attributeName="opacity" dur="10s" repeatCount="indefinite" keyTimes="0;0.276;0.356;1" values="0;0.8;0;0"/></circle>
+<circle cx="310" cy="120" r="30" fill="#151A22" stroke="#6EA8FF" stroke-width="2.5"/>
+<g transform="translate(295 105) scale(1.25)" fill="none" stroke="#6EA8FF" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.5L21 20H3z"/><path d="M7.5 15h9M12 10v5"/></g>
+<text x="310" y="176" font-size="14" font-weight="600" text-anchor="middle" fill="#E9EDF3">Plan</text>
+<circle cx="460" cy="120" r="30" fill="none" stroke="#FF7AC6" stroke-width="2"><animate attributeName="r" dur="10s" repeatCount="indefinite" keyTimes="0;0.448;0.528;1" values="30;30;46;46"/><animate attributeName="opacity" dur="10s" repeatCount="indefinite" keyTimes="0;0.448;0.528;1" values="0;0.8;0;0"/></circle>
+<circle cx="460" cy="120" r="30" fill="#151A22" stroke="#FF7AC6" stroke-width="2.5"/>
+<g transform="translate(445 105) scale(1.25)" fill="none" stroke="#FF7AC6" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 8-7 10-7-10z"/><path d="M12 11v4"/></g>
+<text x="460" y="176" font-size="14" font-weight="600" text-anchor="middle" fill="#E9EDF3">Design</text>
+<circle cx="580" cy="120" r="30" fill="none" stroke="#4FD6E8" stroke-width="2"><animate attributeName="r" dur="10s" repeatCount="indefinite" keyTimes="0;0.586;0.666;1" values="30;30;46;46"/><animate attributeName="opacity" dur="10s" repeatCount="indefinite" keyTimes="0;0.586;0.666;1" values="0;0.8;0;0"/></circle>
+<circle cx="580" cy="120" r="30" fill="#151A22" stroke="#4FD6E8" stroke-width="2.5"/>
+<g transform="translate(565 105) scale(1.25)" fill="none" stroke="#4FD6E8" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 5h18v14H3z"/><path d="M3 9h18M9 13l-2 2 2 2M15 13l2 2-2 2"/></g>
+<text x="580" y="176" font-size="14" font-weight="600" text-anchor="middle" fill="#E9EDF3">Build</text>
+<circle cx="700" cy="120" r="30" fill="none" stroke="#5AD1A0" stroke-width="2"><animate attributeName="r" dur="10s" repeatCount="indefinite" keyTimes="0;0.724;0.804;1" values="30;30;46;46"/><animate attributeName="opacity" dur="10s" repeatCount="indefinite" keyTimes="0;0.724;0.804;1" values="0;0.8;0;0"/></circle>
+<circle cx="700" cy="120" r="30" fill="#151A22" stroke="#5AD1A0" stroke-width="2.5"/>
+<g transform="translate(685 105) scale(1.25)" fill="none" stroke="#5AD1A0" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h6M10 3v6l-5 10h14l-5-10V3"/><path d="M7.5 15h9"/></g>
+<text x="700" y="176" font-size="14" font-weight="600" text-anchor="middle" fill="#E9EDF3">Verify</text>
+<circle cx="820" cy="120" r="30" fill="none" stroke="#F2C230" stroke-width="2"><animate attributeName="r" dur="10s" repeatCount="indefinite" keyTimes="0;0.862;0.942;1" values="30;30;46;46"/><animate attributeName="opacity" dur="10s" repeatCount="indefinite" keyTimes="0;0.862;0.942;1" values="0;0.8;0;0"/></circle>
+<circle cx="820" cy="120" r="30" fill="#151A22" stroke="#F2C230" stroke-width="2.5"/>
+<g transform="translate(805 105) scale(1.25)" fill="none" stroke="#F2C230" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.5l8.2 4.75v9.5L12 21.5l-8.2-4.75v-9.5z"/><path d="M8.5 12h7M12 8.5v7"/></g>
+<text x="820" y="176" font-size="14" font-weight="600" text-anchor="middle" fill="#E9EDF3">Your OK</text>
+<circle cx="940" cy="120" r="30" fill="none" stroke="#E8C9A0" stroke-width="2"><animate attributeName="r" dur="10s" repeatCount="indefinite" keyTimes="0;1.000;0.999;1" values="30;30;46;46"/><animate attributeName="opacity" dur="10s" repeatCount="indefinite" keyTimes="0;1.000;0.999;1" values="0;0.8;0;0"/></circle>
+<circle cx="940" cy="120" r="30" fill="#151A22" stroke="#E8C9A0" stroke-width="2.5"/>
+<g transform="translate(925 105) scale(1.25)" fill="none" stroke="#E8C9A0" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h9l4 4v14H6z"/><path d="M9 11h7M9 15h7M9 7h4"/></g>
+<text x="940" y="176" font-size="14" font-weight="600" text-anchor="middle" fill="#E9EDF3">Ship</text>
+<circle r="7" fill="#F2C230"><animateMotion dur="10s" repeatCount="indefinite" path="M70 120 H940"/></circle>
+<text x="505" y="284" font-size="13" text-anchor="middle" fill="#A3AEBD">You approve the plan, every chunk and the release. Everything else, the team handles.</text>
+</svg>
