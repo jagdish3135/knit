@@ -72,7 +72,9 @@ Then:
    Marketing/SEO → seo-content-writer, public users → accessibility-tester. If the users or the problem
    still feel vague, spawn `ux-researcher` first (writes `ux-research.md`).
 
-4. Start the run log (see "Run log and reports") with a `phase` event for intake.
+4. Start the run log (see "Run log and reports") with a `phase` event for intake, and tell the user they can
+   watch the run live with `node <knit>/board/server.mjs <project>` (then open http://127.0.0.1:4321).
+   Include `phase` and `chunk` on events so the board places each step on the right station.
    If the user chose Notion, create the project's Notion page now (see "Docs in Notion").
 
 ## Build mode: in chunks or whole project

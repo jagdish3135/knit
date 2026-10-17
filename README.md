@@ -109,6 +109,25 @@ flowchart LR
 
 Read the full [run report](docs/examples/habit-tracker/run-report.md) and [token report](docs/examples/habit-tracker/token-report.md).
 
+## Watch the team work: Knit Board
+
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="assets/board-dark.png">
+    <img src="assets/board-light.png" width="900" alt="Knit Board: eight station cards on a thread from Intake to Ship, with Build working on fixes and Verify showing found issues; below, the Verify agents and the live activity feed">
+  </picture>
+</p>
+
+```bash
+node board/server.mjs ../my-project            # live: follows .knit/events.jsonl as the team works
+node board/server.mjs ../my-project --replay   # replays a finished run step by step
+```
+
+Open http://127.0.0.1:4321. Each station card shows its agents, what they're doing, and its tokens.
+Files slide along the thread when one agent hands them to another; a file going backwards is a fix loop.
+Below the flow, **Now** shows the agents at the busiest station, and the feed lists every step. Light and dark.
+No dependencies and no build step; it only listens on 127.0.0.1.
+
 ## Every run is logged and reported
 
 The Manager appends each step to `.knit/events.jsonl` ([format](docs/EVENTS.md)). One command turns it into reports:
@@ -173,7 +192,7 @@ The README graphics are drawn by `node scripts/build-assets.mjs` from the shared
 - [x] Visual README
 - [x] Docs in Notion
 - [x] Works in Codex, Cursor, OpenCode and Antigravity
-- [ ] Knit Board: a live UI of the agents at work
+- [x] Knit Board: a live UI of the agents at work
 - [ ] Project templates (Next.js + FastAPI, Next.js full-stack, Expo mobile)
 - [ ] Hooks: block edits to `.env`, run lint and tests after each agent finishes
 - [ ] Standalone runner on the Claude Agent SDK
