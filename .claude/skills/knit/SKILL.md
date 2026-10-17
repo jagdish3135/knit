@@ -224,11 +224,31 @@ source of truth; Notion is the readable copy for people. Never put secrets, keys
 - One task in flight per file. Never let two agents edit the same file at the same time.
 - Every agent prompt is self-contained: it starts cold, so name the files to read and the exact definition of done.
   If the host has not loaded the Knit agents as subagent types, start a general-purpose agent and tell it to
-  read and follow its role file in `.claude/agents/<role>.md` (pass the role's `model:` as the agent model).
+  read and follow its role file (see "Running in other tools" for where the role files are), passing the role's model when the host allows it.
 - Shared resources: tell parallel agents which ports, databases and folders are theirs, so test runs don't collide.
 - Check, don't trust: read the diff or run the command before you mark a task done.
 - Keep the user in the loop at the gates: after the plan, after each chunk (or the first working build), before anything is pushed or deployed.
 - Don't call an optional specialist the project doesn't need; each one costs time and tokens.
+
+## Running in other tools
+
+Knit installs into Claude Code, Codex, Cursor, OpenCode and Antigravity (`node scripts/install.mjs <tool>`).
+The playbook is the same everywhere; only how you delegate and ask questions changes.
+
+| Tool | Role files | How you delegate | How you ask intake questions |
+|---|---|---|---|
+| Claude Code | `.claude/agents/` | Agent tool with the role as `subagent_type`; several calls in one message run in parallel | `AskUserQuestion` |
+| Codex | `.codex/agents/*.toml` | Ask Codex to spawn the custom agent by name ("spawn backend-dev for tasks 4-7"); it never delegates on its own | Numbered list with lettered options in chat |
+| Cursor | `.cursor/agents/` | Task tool with the subagent's name | Numbered list in chat |
+| OpenCode | `.opencode/agents/` | Task tool, or `@name` | Numbered list in chat |
+| Antigravity | `.agents/knit/agents/` | **Single-agent mode** (below) | Numbered list in chat |
+
+**Single-agent mode** (any tool without custom subagents): you play every role yourself, one at a time.
+Before each step, read that role's file and follow it exactly, write the same handoff files, then
+switch back to the Manager. Waves that would run in parallel run one after another. Keep the roles
+separate: don't fix code while you are the reviewer, and don't review your own fix in the same step.
+Log each role switch as `agent_start` / `agent_end` events, without token numbers if the tool
+doesn't report them.
 
 ## Default stack
 

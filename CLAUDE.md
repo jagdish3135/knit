@@ -9,3 +9,5 @@ This repo defines a multi-agent software team for Claude Code.
   Optional specialists start their description with "Optional specialist."
 - Keep the `.knit/` handoff file names and the task tags (`[ux]` `[fe]` `[be]` `[ops]` `[db]` `[mobile]` `[ai]` `[pay]` `[seo]` `[docs]`)
   consistent across the README, the skill and every agent. Adding or renaming an agent means updating the README tables and the skill's team section.
+- Other tools get generated copies from `scripts/install.mjs`; never edit those copies. If you add an agent frontmatter field or a
+  tool name, check that the installer still maps it (see docs/PORTABILITY.md).

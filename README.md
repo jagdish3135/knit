@@ -9,7 +9,7 @@
 
 <p align="center">
   <img src="https://img.shields.io/badge/agents-13%20%2B%208%20on%20call-111111?style=flat-square" alt="13 agents plus 8 on call">
-  <img src="https://img.shields.io/badge/built%20for-Claude%20Code-111111?style=flat-square" alt="Built for Claude Code">
+  <img src="https://img.shields.io/badge/works%20in-Claude%20Code%20%7C%20Codex%20%7C%20Cursor%20%7C%20OpenCode%20%7C%20Antigravity-111111?style=flat-square" alt="Works in Claude Code, Codex, Cursor, OpenCode and Antigravity">
   <img src="https://img.shields.io/badge/build%20mode-chunks%20%7C%20whole-111111?style=flat-square" alt="Build mode: chunks or whole">
   <img src="https://img.shields.io/badge/docs-Notion-111111?style=flat-square" alt="Docs in Notion">
   <img src="https://img.shields.io/badge/status-alpha-111111?style=flat-square" alt="Status: alpha">
@@ -17,7 +17,7 @@
 
 ---
 
-Knit is a team of specialist AI agents for Claude Code. A **Manager** asks you a few multiple-choice
+Knit is a team of specialist AI agents for Claude Code, Codex, Cursor, OpenCode and Antigravity. A **Manager** asks you a few multiple-choice
 questions, then a Product Manager, Architect, Designer, Developers, Tester, Debugger, Reviewers and a
 Writer take the project from idea to working, tested code. Every handoff is a readable file, every step
 is logged, and nothing ships without your OK.
@@ -136,13 +136,27 @@ stay the source of truth; Notion is the readable, shareable copy.
 2. Type `/knit` and your idea, e.g. `/knit a habit tracker with daily check-ins and streaks`.
 3. Answer the questions. The team builds in a sibling folder (`../<project-name>`).
 
-To use the team in another repo, copy `.claude/agents/` and `.claude/skills/knit/` into it, or into
-`~/.claude/` to have it everywhere.
+## Works in your tool
+
+```bash
+node scripts/install.mjs <claude|codex|cursor|opencode|antigravity|all> --target ../my-project
+```
+
+| Tool | Agents run as | Parallel builders | Clickable questions |
+|---|---|:---:|:---:|
+| Claude Code | Subagents | ✓ | ✓ |
+| Cursor | Subagents | ✓ | |
+| OpenCode | Subagents | ✓ | |
+| Codex | Subagents, when the Manager names them | ✓ | |
+| Antigravity | One agent playing each role in turn | | |
+
+Add `--global` to install for every project on your computer. Details: [docs/PORTABILITY.md](docs/PORTABILITY.md).
 
 ## Docs
 
 | | |
 |---|---|
+| [docs/PORTABILITY.md](docs/PORTABILITY.md) | How Knit installs into Codex, Cursor, OpenCode and Antigravity |
 | [docs/EVENTS.md](docs/EVENTS.md) | The run log format behind the reports, Notion pages and the coming Knit Board |
 | [docs/ROLES.md](docs/ROLES.md) | Every role in MetaGPT, ChatDev, CrewAI, AutoGen, OpenHands, wshobson/agents and VoltAgent, mapped to Knit |
 | [docs/SKILLS.md](docs/SKILLS.md) | Skills and MCP connectors per agent |
@@ -158,7 +172,7 @@ The README graphics are drawn by `node scripts/build-assets.mjs` from the shared
 - [x] Run log, run report and token usage report
 - [x] Visual README
 - [x] Docs in Notion
-- [ ] Works in Codex, Cursor, OpenCode and Antigravity
+- [x] Works in Codex, Cursor, OpenCode and Antigravity
 - [ ] Knit Board: a live UI of the agents at work
 - [ ] Project templates (Next.js + FastAPI, Next.js full-stack, Expo mobile)
 - [ ] Hooks: block edits to `.env`, run lint and tests after each agent finishes
