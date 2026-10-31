@@ -44,8 +44,8 @@
 </header>
 
 <canvas class="weave" id="weave" aria-hidden="true"></canvas>
-<img class="poster" id="poster" alt="" aria-hidden="true" width="1200" height="1020" decoding="async">
-<div class="loader" id="loader" data-loader="loading" role="status" aria-live="polite">
+<picture><source srcset="media/weave-poster.webp" media="(prefers-reduced-motion: reduce)"><img class="poster on" id="poster" src="media/weave-start.webp" alt="" aria-hidden="true" width="1200" height="1020" fetchpriority="high"></picture>
+<div class="loader" id="loader" data-loader="idle" role="status" aria-live="polite">
   <svg viewBox="0 0 76 76" aria-hidden="true"><circle cx="38" cy="38" r="30" fill="none" stroke="var(--line)" stroke-width="3"/><path class="spin-thread" d="M38 8a30 30 0 0 1 30 30" fill="none" stroke="var(--madder)" stroke-width="3" stroke-linecap="round"/><rect x="27" y="24" width="22" height="28" rx="4" fill="var(--dye-manager)"/><rect x="23" y="21" width="30" height="5" rx="2" fill="var(--ink)"/><rect x="23" y="50" width="30" height="5" rx="2" fill="var(--ink)"/></svg>
   <b id="loader-pct">0%</b>
   <span class="label">Winding 9 spools</span>

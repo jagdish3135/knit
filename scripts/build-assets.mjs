@@ -6,7 +6,7 @@ import { AGENTS, THEMES, glyph } from "./palette.mjs";
 
 const out = new URL("../assets/", import.meta.url);
 mkdirSync(out, { recursive: true });
-const FONT = "ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif";
+const FONT = "'Bricolage Grotesque', 'Geist', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif";
 const core = Object.keys(AGENTS).filter((k) => !AGENTS[k].optional);
 const optional = Object.keys(AGENTS).filter((k) => AGENTS[k].optional);
 const svg = (w, h, label, body) =>
@@ -19,9 +19,9 @@ const mark = (x, y, s, t) => `<g transform="translate(${x} ${y}) scale(${s})" fi
 const logo = (mode) => {
   const t = THEMES[mode];
   const dots = core.map((k, i) => `<circle cx="${236 + i * 22}" cy="128" r="6" fill="${AGENTS[k][mode]}"/>`).join("");
-  return svg(720, 160, "Knit: a multi-agent software team", `${mark(20, 22, 3.6, t)}
+  return svg(720, 160, "Knit: a software team for AI coding agents", `${mark(20, 22, 3.6, t)}
 <text x="150" y="88" font-size="72" font-weight="800" letter-spacing="-2" fill="${t.ink}">Knit</text>
-<text x="324" y="86" font-size="22" fill="${t.muted}">a multi-agent software team</text>
+<text x="324" y="86" font-size="22" fill="${t.muted}">the team weaves your app</text>
 <text x="150" y="133" font-size="15" fill="${t.muted}">the team</text>${dots}`);
 };
 

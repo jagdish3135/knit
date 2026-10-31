@@ -16,3 +16,6 @@ graphify-out/
 # Playwright output
 test-results/
 playwright-report/
+
+# README media raw captures (docs/readme/media.mjs)
+docs/readme/raw/

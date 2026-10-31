@@ -200,29 +200,35 @@ export async function createWeave(canvas, opts = {}) {
     }
   }
 
-  let last = 0;
+  // Draw only when something changed: the pointer is still easing, a spool is springing, or the
+  // page moved the progress, the camera or the size. An idle loom costs nothing.
+  let last = 0, dirty = true;
   function frame(t = performance.now()) {
-    if (!state.active) return;
+    if (!state.active) return false;
     const dt = Math.min(0.05, (t - last) / 1000 || 0.016);
     last = t;
+    let moving = Math.abs(state.px - state.tx) > 1e-4 || Math.abs(state.py - state.ty) > 1e-4;
     state.tx += (state.px - state.tx) * 0.06;
     state.ty += (state.py - state.ty) * 0.06;
     rig.rotation.y = state.tx * 0.14;
     rig.rotation.x = -0.04 + state.ty * 0.06;
     for (const s of spools) {
       const u = s.userData, want = state.tugs.get(u.agent) ?? 0;
+      if (Math.abs(want - u.tug) < 1e-4 && Math.abs(u.vel) < 1e-4) { if (u.pulled) { u.tug = want; } else continue; }
+      moving = true;
       u.vel = (u.vel + (want - u.tug) * 0.14) * 0.74;          // springy: overshoots a little, like a tugged thread
       u.tug += u.vel;
-      u.spin += dt * (0.25 + Math.abs(u.vel) * 40);
+      u.spin += dt * Math.abs(u.vel) * 40;
       s.position.y = u.baseY - u.tug * 0.32;
       s.rotation.y = u.spin;
-      if (Math.abs(u.tug) > 0.001 || u.pulled) {
-        for (let i = u.k * PER; i < (u.k + 1) * PER; i++) warpBase(i, u.tug * 0.12);
-        warp.instanceMatrix.needsUpdate = true;
-        u.pulled = Math.abs(u.tug) > 0.001;
-      }
+      for (let i = u.k * PER; i < (u.k + 1) * PER; i++) warpBase(i, u.tug * 0.12);
+      warp.instanceMatrix.needsUpdate = true;
+      u.pulled = Math.abs(u.tug) > 0.001;
     }
+    if (!moving && !dirty) return false;
+    dirty = false;
     renderer.render(scene, camera);
+    return true;
   }
 
   applyProgress();
@@ -231,13 +237,13 @@ export async function createWeave(canvas, opts = {}) {
 
   return {
     renderer, spools,
-    setProgress(p) { state.progress = Math.min(1, Math.max(0, p)); applyProgress(); },
+    setProgress(p) { const n = Math.min(1, Math.max(0, p)); if (n !== state.progress) { state.progress = n; applyProgress(); dirty = true; } },
     pointer(x, y) { state.px = x; state.py = y; },
     tug(agent, amount) { state.tugs.set(agent, amount); },
-    dolly(z) { camera.position.z = D * z; },          // 1 = rest; the scroll story pushes in a little
-    set active(a) { state.active = a; if (a) last = performance.now(); },
+    dolly(z) { if (camera.position.z !== D * z) { camera.position.z = D * z; dirty = true; } },          // 1 = rest; the scroll story pushes in a little
+    set active(a) { state.active = a; if (a) { last = performance.now(); dirty = true; } },
     get active() { return state.active; },
-    resize, frame,
+    resize() { resize(); dirty = true; }, frame,
     dispose() { renderer.dispose(); },
   };
 }

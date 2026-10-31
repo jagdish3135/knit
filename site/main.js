@@ -149,23 +149,46 @@ startCursor();
 // The loom, last. Reduced motion, no WebGL or no libraries: the still poster instead.
 const canvas = $("#weave"), poster = $("#poster"), loader = $("#loader"), pct = $("#loader-pct"), stages = $$("#stages span");
 const done = () => { loader.dataset.loader = "done"; };
-const showPoster = () => { if (!poster.src) poster.src = "media/weave-poster.webp"; poster.classList.add("on"); canvas.style.visibility = "hidden"; done(); };
+const showPoster = (finished = true) => { if (finished) { poster.previousElementSibling?.remove(); poster.src = "media/weave-poster.webp"; } poster.classList.add("on"); canvas.style.visibility = "hidden"; done(); };
 const hasWebGL = (() => { try { const c = document.createElement("canvas"); return !!(c.getContext("webgl2") || c.getContext("webgl")); } catch { return false; } })();
 const lite = matchMedia("(pointer: coarse)").matches || innerWidth < 768;
 
+// The still poster sits behind the hero, the story and the agents only; it hides once you pass them.
+const posterOff = new IntersectionObserver(([en]) => { const past = en.isIntersecting || en.boundingClientRect.top < 0; poster.hidden = past; $("#stages").hidden = past && !document.body.dataset.weave; });
+posterOff.observe($("#proof"));
+
 if (!gsap || reduced || !hasWebGL) showPoster();
 else {
+  // Until the visitor moves, scrolls, touches or types (or 6 s pass), a still of the empty loom stands
+  // in, so the page is interactive at once; then the live 3D loads and cross-fades in.
+  canvas.style.visibility = "hidden";   // the still of the empty loom is already in the HTML
+  let started = false;
+  const TRIGGERS = ["pointermove", "wheel", "touchstart", "keydown", "scroll"];
+  const go = () => {
+    if (started) return;
+    started = true;
+    clearTimeout(idle);
+    TRIGGERS.forEach((ev) => removeEventListener(ev, go));
+    load3D();
+  };
+  TRIGGERS.forEach((ev) => addEventListener(ev, go, { passive: true }));
+  const idle = setTimeout(go, 6000);
+}
+
+async function load3D() {
   let loadedModule = 0, assets = 0, weave = null;
+  loader.dataset.loader = "loading";
   const show = () => (pct.textContent = `${Math.round((loadedModule * 0.5 + assets * 0.5) * 100)}%`);
-  const slow = setTimeout(() => { if (!weave) showPoster(); }, Math.max(0, 3000 - performance.now()));   // never wait past ~3 s after navigation
+  const slow = setTimeout(() => { if (!weave) done(); }, 3000);   // never show the loader longer than ~3 s; the still stays meanwhile
   try {
     const { createWeave } = await import("./weave.js");
     loadedModule = 1; show();
     weave = await createWeave(canvas, { lite, maxDpr: lite ? 1.5 : 1.75, onProgress: (p) => { assets = p; show(); } });
     clearTimeout(slow);
     pct.textContent = "100%";
-    if (poster.classList.contains("on")) { poster.classList.remove("on"); canvas.style.visibility = ""; }
+    canvas.style.visibility = "";
     gsap.fromTo(canvas, { autoAlpha: 0 }, { autoAlpha: 1, duration: dur[4], ease: ease.out });
+    gsap.to(poster, { autoAlpha: 0, duration: dur[4], ease: ease.out, onComplete: () => poster.classList.remove("on") });
     done();
 
     let visible = true;
@@ -180,7 +203,7 @@ else {
     // Each step's own trigger lights its stage pill. After the agents section the loom fades out and
     // stops rendering while hidden.
     const view = { p: 0, z: 1 };
-    gsap.timeline({ defaults: { ease: "none" }, scrollTrigger: { trigger: "#story", start: "top 55%", end: "bottom 60%", scrub: 0.6 } })
+    gsap.timeline({ defaults: { ease: "none" }, scrollTrigger: { trigger: "#story", start: "top 55%", end: "bottom 95%", scrub: 0.6 } })
       .to(view, { p: 1, z: 0.94, duration: 1, onUpdate: () => { weave.setProgress(view.p); weave.dolly(view.z); } });
     $$(".step").forEach((step, i) => ScrollTrigger.create({ trigger: step, start: "top 55%", end: "bottom 55%",
       onToggle: (st) => {

@@ -1,18 +1,28 @@
 <p align="center">
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="assets/logo-dark.svg">
-    <img src="assets/logo-light.svg" width="560" alt="Knit: a multi-agent software team">
-  </picture>
+  <a href="https://jagdish3135.github.io/knit/"><img src="docs/readme/banner.webp" width="900" alt="Knit: the team weaves your app. A software team for AI coding agents, at the cost of one normal session."></a>
 </p>
 
 <p align="center"><em>You bring the idea. The team asks, plans, builds, tests, reviews and ships it, and you approve each step.</em></p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/agents-13%20%2B%208%20on%20call-111111?style=flat-square" alt="13 agents plus 8 on call">
-  <img src="https://img.shields.io/badge/works%20in-Claude%20Code%20%7C%20Codex%20%7C%20Cursor%20%7C%20OpenCode%20%7C%20Antigravity-111111?style=flat-square" alt="Works in Claude Code, Codex, Cursor, OpenCode and Antigravity">
-  <img src="https://img.shields.io/badge/build%20mode-chunks%20%7C%20whole-111111?style=flat-square" alt="Build mode: chunks or whole">
-  <img src="https://img.shields.io/badge/docs-Notion-111111?style=flat-square" alt="Docs in Notion">
-  <img src="https://img.shields.io/badge/status-alpha-111111?style=flat-square" alt="Status: alpha">
+  <a href="https://jagdish3135.github.io/knit/"><b>Website</b></a> ·
+  <a href="#quick-start"><b>Quick start</b></a> ·
+  <a href="#watch-the-team-work-knit-board"><b>Knit Board</b></a> ·
+  <a href="#built-with-knit"><b>Built with Knit</b></a> ·
+  <a href="docs/BENCHMARK.md"><b>Benchmark</b></a>
+</p>
+
+<p align="center">
+  <img src="https://img.shields.io/badge/agents-13%20%2B%208%20on%20call-1E2A5A?style=flat-square" alt="13 agents plus 8 on call">
+  <img src="https://img.shields.io/badge/works%20in-Claude%20Code%20%7C%20Codex%20%7C%20Cursor%20%7C%20OpenCode%20%7C%20Antigravity-1E2A5A?style=flat-square" alt="Works in Claude Code, Codex, Cursor, OpenCode and Antigravity">
+  <img src="https://img.shields.io/badge/cost-%2B5%25%20vs%20a%20plain%20session-C4432B?style=flat-square" alt="Costs 5% more than a plain session">
+  <img src="https://img.shields.io/badge/docs-Notion-1E2A5A?style=flat-square" alt="Docs in Notion">
+  <img src="https://img.shields.io/badge/status-alpha-E2A522?style=flat-square" alt="Status: alpha">
+</p>
+
+<p align="center">
+  <a href="docs/readme/demo.mp4"><picture><source srcset="docs/readme/demo.webp" type="image/webp"><img src="docs/readme/demo.gif" width="860" alt="The Knit landing page: nine spools feed a loom, and scrolling weaves the rows in, plan, build, tests, review and ship, until the cloth shows LexAgent, an app built with Knit"></picture></a>
+  <br><sub>Scroll the <a href="https://jagdish3135.github.io/knit/">landing page</a> and the team weaves an app. <a href="docs/readme/demo.mp4">MP4</a></sub>
 </p>
 
 ---
@@ -26,6 +36,11 @@ slice. Every step is logged, and nothing goes live without your OK.
 124,120 (+5%), with less code, more checks, a plan, a run log and a README. [Benchmark](docs/BENCHMARK.md).
 
 <p align="center"><img src="assets/benchmark.svg" width="760" alt="Tokens for the same calculator: plain session 117,960, Knit solo 124,120, Knit team mode 268,021"></p>
+
+<p align="center">
+  <img src="docs/readme/card-landing.webp" width="49%" alt="Landing page card: the hero, with nine spools feeding a three.js loom">
+  <img src="docs/readme/card-weave.webp" width="49%" alt="Landing page card, dark: on the last rows the cloth is LexAgent, an app built with Knit">
+</p>
 
 ## How it works
 
@@ -119,22 +134,23 @@ Read the full [run report](docs/examples/habit-tracker/run-report.md) and [token
 
 ## Watch the team work: Knit Board
 
-<p align="center">
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="assets/board-dark.png">
-    <img src="assets/board-light.png" width="900" alt="Knit Board: eight station cards on a thread from Intake to Ship, with Build working on fixes and Verify showing found issues; below, the Verify agents and the live activity feed">
-  </picture>
-</p>
+<p align="center"><img src="docs/readme/card-board.webp" width="860" alt="Knit Board card: every agent is a thread across the stations, two agents running in Build, with the Now panel, Watchguard and token bars"></p>
 
 ```bash
 node board/server.mjs ../my-project            # live: follows .knit/events.jsonl as the team works
 node board/server.mjs ../my-project --replay   # replays a finished run step by step
 ```
 
-`/knit-build` starts it for you and it opens in your browser. Each station card shows its agents, what they're doing, and its tokens.
-Files slide along the thread when one agent hands them to another; a file going backwards is a fix loop.
-Below the flow, **Now** shows who is working, the **Watchguard** watches for anything stuck and shows the quality card once it passes, and the feed lists every step. The header shows the Knit version and tells you when an update is out. Light and dark.
+`/knit-build` starts it for you and it opens in your browser. Every agent is a coloured thread across the
+stations, from Intake to Ship; each step it logs ties a knot, and the thread grows as the run goes. A thread ends
+in one of five clear states: idle, running (a shuttle), waiting for your OK, failed or done. A file handed from
+one agent to another travels between their threads.
+On the right, **Now** shows who is working, the **Watchguard** watches for anything stuck and shows the quality
+card once it passes, and the feed lists every step. The header shows the Knit version and tells you when an update
+is out. Light and dark, in the same Loom colours as the landing page.
 No dependencies and no build step; it only listens on 127.0.0.1.
+
+<p align="center"><img src="docs/readme/card-run.webp" width="49%" alt="Run replay card: Calculator 2.0's real run log as threads"> <img src="docs/readme/card-phone.webp" width="49%" alt="Phone card: the landing page on a phone, copy on cotton panels over the loom"></p>
 
 ## Every run is logged and reported
 
@@ -163,6 +179,17 @@ stay the source of truth; Notion is the readable, shareable copy.
 2. Type `/knit-build` and your idea, e.g. `/knit-build a habit tracker with daily check-ins and streaks`.
 3. Answer the questions. The team builds in a sibling folder (`../<project-name>`).
 
+## Built with Knit
+
+| App | What it is | Live | Code |
+|---|---|---|---|
+| **LexAgent** | Four AI agents read Indian legal case files, cross-check each other and hand you a PDF brief | [lexagent-ai.vercel.app](https://lexagent-ai.vercel.app) | [repo](https://github.com/jagdish3135/lexagent) |
+| **JanDrishti** | Civic complaint dashboard: every complaint gets a named officer and a deadline | [jandrishti-app.vercel.app](https://jandrishti-app.vercel.app) | [repo](https://github.com/jagdish3135/jandrishti) |
+| **Glim** | MCP server for Instagram Business and Creator accounts, with a demo mode | [glim-mcp.vercel.app](https://glim-mcp.vercel.app) | [repo](https://github.com/jagdish3135/glim) |
+| **Calculator 2.0** | An animated calculator with a living number background | [calculator-2-umber.vercel.app](https://calculator-2-umber.vercel.app) | [repo](https://github.com/jagdish3135/Calculator-2.0) |
+
+Every app Knit ships carries the badge: `[![Built with Knit](https://jagdish3135.github.io/knit/badge.svg)](https://jagdish3135.github.io/knit/)`
+
 ## Works in your tool
 
 ```bash
@@ -188,8 +215,12 @@ Add `--global` to install for every project on your computer. Details: [docs/POR
 | [docs/ROLES.md](docs/ROLES.md) | Every role in MetaGPT, ChatDev, CrewAI, AutoGen, OpenHands, wshobson/agents and VoltAgent, mapped to Knit |
 | [docs/SKILLS.md](docs/SKILLS.md) | Skills and MCP connectors per agent |
 | [docs/REFERENCES.md](docs/REFERENCES.md) | Projects Knit learns from |
+| [docs/design/](docs/design/) | The Loom style board: palette, type, states, cursor options |
+| [CREDITS.md](CREDITS.md) | Fonts and libraries used by the landing page |
 
-The README graphics are drawn by `node scripts/build-assets.mjs` from the shared agent palette in `scripts/palette.mjs`.
+The README graphics are drawn by `node scripts/build-assets.mjs` from the shared agent palette in `scripts/palette.mjs`,
+and the banner, cards and demo by `node docs/readme/media.mjs`. Colours, type and motion for the site and the board live in
+`site/tokens.css`; `node scripts/check-contrast.mjs` checks every pair against WCAG AA.
 
 ## Roadmap
 

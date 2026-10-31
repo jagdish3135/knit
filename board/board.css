@@ -51,7 +51,7 @@ h1,h2{font-family:var(--font-display);letter-spacing:-.02em;margin:0}
   .wrap{height:100vh;padding-bottom:18px}
   .top{flex:none}
   .main{flex:1;min-height:0;flex-wrap:nowrap;align-items:stretch}
-  .loom{display:flex;flex-direction:column;min-height:0;overflow:auto}
+  .loom{display:flex;flex-direction:column;min-height:0;max-height:100%;overflow:auto;align-self:flex-start}
   .side{flex:0 0 380px;min-height:0;overflow-y:auto;overscroll-behavior:contain;padding:2px 4px 2px 2px;scrollbar-width:thin;scrollbar-color:var(--stitch) transparent}
   #feed{max-height:none;overflow:visible}
 }

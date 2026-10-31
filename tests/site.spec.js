@@ -12,7 +12,11 @@ test("loads, finishes the loader and the call to action leads to GitHub", async 
   await page.route("https://github.com/**", (r) => r.fulfill({ status: 200, contentType: "text/html", body: "<title>GitHub</title>ok" }));
   await page.goto("/");
   await expect(page.getByRole("heading", { level: 1 })).toHaveText(/The team weaves your app/);
-  await expect(page.locator("#loader")).toHaveAttribute("data-loader", "done", { timeout: 6_000 });
+  // The still loom shows first; the live 3D loads on the first move and the loader finishes.
+  await expect(page.locator("#poster")).toHaveClass(/on/);
+  await page.mouse.move(400, 300);
+  await page.mouse.wheel(0, 40);       // a scroll also starts it (touch phones have no pointer moves)
+  await expect(page.locator("#loader")).toHaveAttribute("data-loader", "done", { timeout: 15_000 });
   const cta = page.getByRole("link", { name: "Get Knit on GitHub" });
   await cta.scrollIntoViewIfNeeded();
   await cta.click();

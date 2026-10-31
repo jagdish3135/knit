@@ -1,5 +1,17 @@
 # Changelog
 
+## Unreleased
+
+- **Loom identity:** cotton, indigo ink and natural dyes, one thread colour per agent, Bricolage Grotesque, Geist and
+  Geist Mono (self-hosted). All in `site/tokens.css`; `scripts/check-contrast.mjs` checks every pair against WCAG AA.
+- **Landing page:** nine Blender spools feed a three.js loom that weaves plan, build, tests, review and ship as you
+  scroll, ending on LexAgent woven as a picture. Needle-and-thread cursor, one card per agent, a replay of a real run
+  log, apps built with Knit, copy buttons and an FAQ. The 3D loads on the first move and draws only when something
+  changes (Lighthouse desktop 100 in all four categories, mobile 95 or more).
+- **Knit Board:** the same look; every agent is a thread across the stations with clear idle, running, waiting,
+  failed and done ends; the header and loom stay fixed while the side column scrolls. Event format unchanged.
+- README media redrawn: banner, cards and a scroll demo (`docs/readme/media.mjs`).
+
 ## 0.3.1 · 2026-10-17
 
 - **Built with Knit badge for apps:** `snippets/built-with-knit.html`, a small badge that grows into a card on hover

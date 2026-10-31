@@ -73,7 +73,7 @@ code,.mono{font-family:var(--font-mono)}
 .poster{object-fit:contain;object-position:right center;width:52vw;left:auto;right:2vw;height:calc(100vh - 168px);top:88px;opacity:0}
 .poster.on{opacity:1;transition:opacity var(--dur-4) var(--ease-out)}
 .loader{position:fixed;z-index:1;right:calc(27.5vw - 130px);top:calc(50vh - 50px);width:260px;text-align:center;display:grid;gap:12px;justify-items:center;pointer-events:none;transition:opacity var(--dur-3)}
-.loader[data-loader="done"]{opacity:0}
+.loader[data-loader="done"],.loader[data-loader="idle"]{opacity:0}
 .loader svg{width:76px;height:76px}
 .loader .spin-thread{transform-origin:38px 38px;animation:wind 1.6s linear infinite}
 .loader b{font:600 28px var(--font-display);letter-spacing:-.02em}

@@ -1,8 +1,8 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="760" height="240" viewBox="0 0 760 240" role="img" aria-label="Tokens for the same calculator: plain session 117,960, Knit solo 124,120, Knit team mode 268,021" font-family="ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif">
+<svg xmlns="http://www.w3.org/2000/svg" width="760" height="240" viewBox="0 0 760 240" role="img" aria-label="Tokens for the same calculator: plain session 117,960, Knit solo 124,120, Knit team mode 268,021" font-family="'Bricolage Grotesque', 'Geist', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif">
 <style>
-.bg{fill:#FFFFFF;stroke:#DCD7CB}.t{fill:#16181D;font-size:18px;font-weight:700}.s{fill:#525965;font-size:13px}.l{fill:#16181D;font-size:14px}.v{fill:#525965;font-size:13px;font-family:ui-monospace,monospace}
-.bar-a{fill:#CFC8BA}.bar-k{fill:#C99200}.bar-t{fill:#B8332C}
-@media (prefers-color-scheme: dark){.bg{fill:#0D1117;stroke:#2A3340}.t,.l{fill:#E9EDF3}.s,.v{fill:#A3AEBD}.bar-a{fill:#36404D}.bar-k{fill:#F2C230}.bar-t{fill:#FF6B6B}}
+.bg{fill:#F3EEE4;stroke:#D9D0BF}.t{fill:#1E2A5A;font-size:18px;font-weight:700}.s{fill:#5E5A50;font-size:13px}.l{fill:#1E2A5A;font-size:14px}.v{fill:#5E5A50;font-size:13px;font-family:ui-monospace,monospace}
+.bar-a{fill:#C9C0AE}.bar-k{fill:#C4432B}.bar-t{fill:#A3263A}
+@media (prefers-color-scheme: dark){.bg{fill:#0D1230;stroke:#272E58}.t,.l{fill:#EDE8DD}.s,.v{fill:#A9A6BE}.bar-a{fill:#3A4170}.bar-k{fill:#F07A5E}.bar-t{fill:#FF7A90}}
 </style>
 <rect class="bg" x=".5" y=".5" width="759" height="239" rx="16"/>
 <text class="t" x="24" y="38">Same calculator, same model: tokens used</text>

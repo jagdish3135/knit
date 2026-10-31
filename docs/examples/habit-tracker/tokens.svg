@@ -1,8 +1,8 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="760" height="388" viewBox="0 0 760 388" role="img" aria-label="Tokens by agent, 2.16M in total">
 <style>
 .bg{fill:#FFFFFF}.t{fill:#16181D;font:600 16px system-ui,sans-serif}.l{fill:#16181D;font:13px system-ui,sans-serif}.v{fill:#525965;font:12px ui-monospace,monospace}.track{fill:#EFEBE2}
-.b0{fill:#0B7D8C}.b1{fill:#5644CC}.b2{fill:#4A5563}.b3{fill:#1B7F57}.b4{fill:#B8332C}.b5{fill:#7A5A30}.b6{fill:#AD2F76}.b7{fill:#2B5FC2}.b8{fill:#7E43BA}.b9{fill:#A85A00}.b10{fill:#B4461F}
-@media (prefers-color-scheme: dark){.bg{fill:#151A22}.t,.l{fill:#E9EDF3}.v{fill:#A3AEBD}.track{fill:#232B37}.b0{fill:#4FD6E8}.b1{fill:#9B8CFF}.b2{fill:#C3CEDB}.b3{fill:#5AD1A0}.b4{fill:#FF6B6B}.b5{fill:#E8C9A0}.b6{fill:#FF7AC6}.b7{fill:#6EA8FF}.b8{fill:#D4A5FF}.b9{fill:#FFB347}.b10{fill:#FF8A5B}}
+.b0{fill:#0B6F6B}.b1{fill:#5A45B6}.b2{fill:#575D6C}.b3{fill:#286F43}.b4{fill:#A3263A}.b5{fill:#7A5230}.b6{fill:#AE2E6C}.b7{fill:#2C5AA8}.b8{fill:#863C88}.b9{fill:#A35000}.b10{fill:#B23A22}
+@media (prefers-color-scheme: dark){.bg{fill:#151A22}.t,.l{fill:#E9EDF3}.v{fill:#A3AEBD}.track{fill:#232B37}.b0{fill:#55D9CF}.b1{fill:#AE9CFF}.b2{fill:#BEC5D4}.b3{fill:#74D69A}.b4{fill:#FF7A90}.b5{fill:#E6BE94}.b6{fill:#FF8EC4}.b7{fill:#86AEFF}.b8{fill:#E4A2EE}.b9{fill:#FFAA55}.b10{fill:#FF8A6E}}
 </style>
 <rect class="bg" width="760" height="388" rx="14"/>
 <text class="t" x="20" y="32">Tokens by agent · habit-tracker · 2.16M total</text>
