@@ -26,6 +26,11 @@ const FILES = { // the only files the server will send
   "/board.css": [join(here, "board.css"), "text/css"],
   "/board.js": [join(here, "board.js"), "text/javascript"],
   "/palette.mjs": [join(here, "..", "scripts", "palette.mjs"), "text/javascript"],
+  // The Loom look, shared with the landing page: tokens and the self-hosted fonts.
+  "/tokens.css": [join(here, "..", "site", "tokens.css"), "text/css"],
+  "/fonts/bricolage-grotesque.woff2": [join(here, "..", "site", "fonts", "bricolage-grotesque.woff2"), "font/woff2"],
+  "/fonts/geist.woff2": [join(here, "..", "site", "fonts", "geist.woff2"), "font/woff2"],
+  "/fonts/geist-mono.woff2": [join(here, "..", "site", "fonts", "geist-mono.woff2"), "font/woff2"],
 };
 const isLocalHost = (h = "") => [`127.0.0.1:${port}`, `localhost:${port}`, `[::1]:${port}`].includes(h);
 
@@ -90,7 +95,7 @@ const server = createServer((req, res) => {
   }
   const file = FILES[path];
   if (!file || req.method !== "GET") { res.writeHead(404, HEADERS).end("Not found"); return; }
-  res.writeHead(200, { ...HEADERS, "Content-Type": `${file[1]}; charset=utf-8` });
+  res.writeHead(200, { ...HEADERS, "Content-Type": file[1].startsWith("font/") ? file[1] : `${file[1]}; charset=utf-8` });
   createReadStream(file[0]).pipe(res);
 });
 // If the port is taken (say, a board for another project), use the next free one.

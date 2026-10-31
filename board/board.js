@@ -1,5 +1,6 @@
-// Knit Board client: turns the .knit/events.jsonl stream into the flow view. All event text is set
-// with textContent, never as HTML, because the log is written by agents.
+// Knit Board client: turns the .knit/events.jsonl stream into the loom view. Every agent is a thread
+// across the stations; knots are its steps. All event text is set with textContent, never as HTML,
+// because the log is written by agents.
 import { AGENTS } from "/palette.mjs";
 
 const STATIONS = [
@@ -15,21 +16,25 @@ const STATIONS = [
 const GATE = 6;
 const PHASE = { intake: 0, requirements: 1, plan: 2, design: 3, build: 4, verify: 5, ship: 7 };
 const DONE = { done: "done", approved: "done", passed: "done", stopped: "stopped" };
-const SVG = "http://www.w3.org/2000/svg";
+const NS = "http://www.w3.org/2000/svg";
+const LEFT = 150, LANE = 46;
 const $ = (id) => document.getElementById(id);
 const el = (tag, cls, text) => { const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; };
-const svg = (tag, attrs, kids = []) => { const e = document.createElementNS(SVG, tag); for (const k in attrs) e.setAttribute(k, attrs[k]); e.append(...kids); return e; };
+const svg = (tag, attrs = {}) => { const e = document.createElementNS(NS, tag); for (const k in attrs) e.setAttribute(k, attrs[k]); return e; };
 const short = (n) => (n >= 1e6 ? `${(n / 1e6).toFixed(2)}M` : n >= 1e3 ? `${Math.round(n / 1e3)}k` : String(n));
 const nameOf = (a) => AGENTS[a]?.name ?? (a === "user" ? "You" : a ?? "");
+const css = (v) => getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+const thread = (a) => (AGENTS[a] && !AGENTS[a].optional ? a : "oncall");
+const dye = (a) => (a === "user" ? css("--ink") : css(`--dye-${thread(a)}`) || css("--stitch"));
+const ink = (a) => (a === "user" ? css("--ink") : css(`--t-${thread(a)}`) || css("--ink"));
+const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
 
 let dark;
 try { dark = localStorage.getItem("knit-theme") === "dark" || (!localStorage.getItem("knit-theme") && matchMedia("(prefers-color-scheme: dark)").matches); }
 catch { dark = matchMedia("(prefers-color-scheme: dark)").matches; }
-const css = (v) => getComputedStyle(document.documentElement).getPropertyValue(v).trim();
-const color = (a) => (AGENTS[a] ? AGENTS[a][dark ? "dark" : "light"] : css("--muted"));
 
 let S;
-const reset = () => { S = { runs: {}, phase: -1, chunk: 0, gateOpen: false, gateDone: false, tests: null, first: null, last: null, focus: -1, msg: {}, mgr: "", quality: null, alerts: [], checks: [], lastSeen: performance.now() }; };
+const reset = () => { S = { runs: {}, phase: -1, chunk: 0, gateOpen: false, gateDone: false, tests: null, testFailed: false, first: null, last: null, focus: -1, msg: {}, mgr: "", quality: null, alerts: [], checks: [], lastSeen: performance.now(), knots: {}, order: [] }; };
 reset();
 
 function stationFor(agent, phase) {
@@ -71,38 +76,47 @@ function apply(e) {
       break;
     }
     case "gate":
-      if (S.phase >= 3) { S.gateOpen = !e.result; S.gateDone = e.result === "approved"; note(GATE, e.msg); }
+      // A gate the user logs is their answer (docs/EVENTS.md), even when it carries no result.
+      if (S.phase >= 3) {
+        const answered = e.agent === "user" || !!e.result;
+        S.gateOpen = !answered;
+        S.gateDone = e.result ? e.result === "approved" : e.agent === "user";
+        note(GATE, e.msg);
+      }
       break;
     case "test":
       if (e.counts) S.tests = e.counts;
+      S.testFailed = (e.counts?.failed ?? 0) > 0;
       S.checks.push({ name: e.msg ?? "Tests", status: e.counts?.failed ? "fail" : "pass" });
       break;
     case "quality": S.quality = Array.isArray(e.items) ? e.items : null; break;
     case "watch": if (e.status === "ok") S.alerts = []; else if (e.status) S.alerts.push(e.msg ?? "Something needs a look"); break;
   }
   if (e.agent === "manager" || e.type === "decision") S.mgr = e.msg;
+  // Work logged in a later phase means the run is there now (a run can reach Ship without a phase event).
+  if (e.type !== "phase" && PHASE[e.phase] > S.phase) S.phase = PHASE[e.phase];
+  // Once the app has shipped, agents that never logged an end are finished too.
+  if (S.gateDone && S.phase === 7) for (const r of Object.values(S.runs)) if (r.state === "working") r.state = "done";
+
+  // A knot on the agent's thread for every step it logs. Approvals sit on your thread at "Your OK".
+  const who = e.agent ?? (e.type === "commit" ? "manager" : null);
+  if (who) {
+    const s = who === "user" || e.type === "gate" ? GATE : S.runs[who]?.station ?? stationFor(who, e.phase);
+    if (!S.order.includes(who)) S.order.push(who);
+    (S.knots[who] ??= []).push({ s, bad: e.type === "test" && (e.counts?.failed ?? 0) > 0 });
+  }
+  if (e.type === "gate" && !S.order.includes("user")) S.order.push("user");
 }
 
-// ---- drawing -------------------------------------------------------------------------------
-const ringStyle = (state, c) => ({
-  working: { stroke: c, dash: "34 82", cls: "spin" },
-  done: { stroke: c, dash: "none", cls: "" },
-  issues: { stroke: css("--warn"), dash: "6 4", cls: "" },
-  waiting: { stroke: css("--accent"), dash: "none", cls: "blink" },
-  stopped: { stroke: css("--faint"), dash: "6 4", cls: "" },
-}[state] ?? { stroke: css("--faint"), dash: "2 5", cls: "" });
-
-function face(agent, state, big) {
-  const c = color(agent), r = ringStyle(state, c), size = big ? 48 : 36, g = big ? 24 : 18;
-  const a = AGENTS[agent] ?? { d1: "M12 3a9 9 0 1 0 0.01 0z", d2: "" };
-  const wrap = el("div", `face${big ? " big" : ""}`);
-  wrap.append(
-    svg("svg", { class: `ring ${r.cls}`, width: size, height: size, viewBox: "0 0 42 42", "aria-hidden": "true" },
-      [svg("circle", { cx: 21, cy: 21, r: 18.5, fill: "none", stroke: r.stroke, "stroke-width": 2.3, "stroke-dasharray": r.dash })]),
-    svg("svg", { class: state === "waiting" ? "blink" : "", width: g, height: g, viewBox: "0 0 24 24", "aria-hidden": "true", style: `left:${(size - g) / 2}px;top:${(size - g) / 2}px` },
-      [a.d1, a.d2].filter(Boolean).map((d) => svg("path", { d, fill: "none", stroke: c, "stroke-width": 2, "stroke-linecap": "round", "stroke-linejoin": "round" }))),
-  );
-  return wrap;
+// Where a thread's lane ends and how it looks there: idle, running, waiting, failed or done.
+function laneState(a) {
+  if (a === "user") return S.gateOpen ? "waiting" : S.knots.user?.length ? "done" : "idle";
+  const r = S.runs[a];
+  if (r?.state === "working") return "running";
+  if (r?.state === "issues" || (a === "tester" && S.testFailed)) return "failed";
+  if (r?.state === "stopped") return "idle";
+  if (a === "manager") return S.gateDone && S.phase === 7 ? "done" : "active";
+  return S.knots[a]?.length ? "done" : "idle";
 }
 
 function stationState(i) {
@@ -114,62 +128,147 @@ function stationState(i) {
   if (i < S.phase || (i === S.phase && ran.length)) return { ran, state: "done" };
   return { ran, state: "next" };
 }
+const LABEL = { working: "Working", done: "Done", issues: "Found issues", waiting: "Waiting for you", next: "" };
 
-const LABEL = { working: "Working", done: "Done", issues: "Found issues", waiting: "Waiting for you", next: "Next" };
-function drawStations() {
-  const box = $("stations");
-  box.replaceChildren(...STATIONS.map((st, i) => {
-    const { ran, state } = stationState(i);
-    const shown = ran.length ? ran : st.agents.slice(0, i === 4 || i === 5 ? 3 : 1);
-    const lead = shown[0], c = color(lead);
-    const col = el("div", "station");
-    const node = el("span", "node"), stem = el("span", "stem");
-    const mark = state === "done" ? css("--ink") : state === "next" ? css("--faint") : state === "issues" || state === "waiting" ? css("--warn") : c;
-    node.style.borderColor = mark; if (state !== "next") node.style.background = mark; stem.style.background = mark;
-    const card = el("div", `card ${state === "working" || state === "waiting" ? "live" : state}`);
-    if (state === "working") { card.style.borderColor = c; card.style.setProperty("--glow", `${c}40`); }
-    if (state === "waiting") { card.style.borderColor = css("--accent"); card.style.setProperty("--glow", `${css("--accent")}40`); }
-    const faces = el("div", "faces");
-    faces.append(...shown.slice(0, 5).map((a) => face(a, state === "next" ? "idle" : i === GATE ? (state === "waiting" ? "waiting" : "done") : S.runs[a]?.state ?? "idle")));
-    const top = el("div", "card-top"); top.append(faces);
-    if (state === "done") { const ck = el("span", "check"); ck.append(svg("svg", { width: 10, height: 10, viewBox: "0 0 10 10", "aria-hidden": "true" }, [svg("path", { d: "M2 5.2l2 2 4-4.4" })])); top.append(ck); }
-    const label = el("div", "state", LABEL[state]);
-    if (state !== "done" && state !== "next") label.style.color = state === "working" ? c : css("--warn");
-    const bar = el("div", "bar"), fill = el("span", state === "working" ? "work" : "");
-    fill.style.width = { done: "100%", waiting: "100%", working: "60%", issues: "100%", next: "0%" }[state];
-    fill.style.background = state === "issues" ? css("--warn") : c; bar.append(fill);
-    const tokens = ran.reduce((n, a) => n + S.runs[a].tokens, 0);
-    const foot = el("div", "foot"); foot.append(el("span", "", ran.length ? `${ran.length} agent${ran.length > 1 ? "s" : ""}` : ""), el("span", "", tokens ? short(tokens) : ""));
-    card.append(top, (() => { const d = el("div"); d.append(el("div", "name", st.name), label); return d; })(),
-      el("div", "activity", S.msg[i] ?? (state === "next" ? "Up next" : "")), bar, foot);
-    col.append(node, stem, card);
-    return col;
-  }));
-  $("chunk-label").textContent = S.chunk ? `CHUNK ${S.chunk} · REPEAT UNTIL DONE` : "EACH CHUNK · DESIGN, BUILD, VERIFY, YOUR OK";
-  document.querySelector(".loop").classList.toggle("open", S.gateOpen);
+// ---- the loom -----------------------------------------------------------------------------
+let W = 1000, colW = (W - LEFT) / 8;
+const cx = (s) => LEFT + colW * (s + 0.5);
+const knotX = (s, n) => cx(s) + Math.max(-1, Math.min(1, (n - 1) * 0.45 - 0.45)) * colW * 0.3;
+const wave = (x, y) => { let d = `M${LEFT - 12} ${y}`; for (let i = LEFT - 12; i < x - 9; i += 18) d += ` q4.5 -3.6 9 0 t9 0`; return d; };
+const lanes = {};
+let box = null, bands = null;
+
+function build() {
+  W = Math.max(880, $("weave").clientWidth);
+  colW = (W - LEFT) / 8;
+  const cols = $("cols");
+  cols.replaceChildren(el("span"), ...STATIONS.map((st, i) => { const h = el("div", "col-h"); h.dataset.i = i; h.append(st.name, el("b")); return h; }));
+  const chunk = el("div", "chunk"); chunk.style.left = `${LEFT + colW * 3}px`; chunk.style.width = `${colW * 4}px`; chunk.append(el("span", "", "EACH CHUNK"));
+  cols.append(chunk);
+  box = svg("svg", { role: "img", "aria-label": "Agent threads across the stations" });
+  bands = svg("g");
+  box.append(bands);
+  for (const k of Object.keys(lanes)) delete lanes[k];
+  $("lanes").replaceChildren($("lanes-empty") ?? el("p", "empty"), box);
 }
 
+function lane(a) {
+  if (lanes[a]) return lanes[a];
+  const r = Object.keys(lanes).length, y = 22 + r * LANE;
+  const g = svg("g");
+  const name = svg("text", { x: 0, y: y + 5, class: "lane-name" }); name.textContent = nameOf(a);
+  const idle = svg("path", { d: `M${LEFT - 12} ${y}H${W}`, class: "lane-idle" });
+  const line = svg("path", { class: "lane-thread", d: "" });
+  const knots = svg("g"), end = svg("g");
+  g.append(name, idle, line, knots, end);
+  box.append(g);
+  return (lanes[a] = { a, y, name, line, knots, end, x: LEFT - 12, shown: LEFT - 12, drawn: 0, state: "" });
+}
+
+function grow(L) {
+  const from = L.shown, to = L.x;
+  if (reduced || from === to) { L.shown = to; L.line.setAttribute("d", wave(to, L.y)); return; }
+  const t0 = performance.now(), dur = 700, ease = (t) => 1 - Math.pow(1 - t, 4);
+  cancelAnimationFrame(L.raf);
+  const step = (t) => {
+    const k = Math.min(1, (t - t0) / dur);
+    L.shown = from + (to - from) * ease(k);
+    L.line.setAttribute("d", wave(L.shown, L.y));
+    if (k < 1) L.raf = requestAnimationFrame(step);
+  };
+  L.raf = requestAnimationFrame(step);
+}
+
+function drawEnd(L, state) {
+  L.end.replaceChildren();
+  const { a, x, y } = L, c = dye(a);
+  if (state === "idle" || !S.knots[a]?.length) return;
+  if (state === "running") {
+    L.end.append(svg("circle", { cx: x, cy: y, r: 13, fill: "none", stroke: c, "stroke-width": 2, class: "pulse-ring" }),
+      svg("path", { d: `M${x - 10} ${y} Q${x + 4} ${y - 7} ${x + 18} ${y} Q${x + 4} ${y + 7} ${x - 10} ${y}Z`, fill: c, stroke: css("--ink"), "stroke-width": 1.3, class: "shuttle" }));
+  } else if (state === "waiting") {
+    L.end.append(svg("circle", { cx: x, cy: y, r: 12, fill: "none", stroke: css("--turmeric-text"), "stroke-width": 2.4, class: "pulse-ring" }), svg("circle", { cx: x, cy: y, r: 5, fill: css("--turmeric") }));
+  } else if (state === "failed") {
+    L.end.append(svg("path", { d: `M${x - 9} ${y}l-7 -6M${x - 9} ${y}l-8 1M${x - 9} ${y}l-6 6`, stroke: css("--bad"), "stroke-width": 2, "stroke-linecap": "round" }),
+      svg("circle", { cx: x, cy: y, r: 8.5, fill: css("--bad") }), svg("path", { d: `M${x - 3} ${y - 3}l6 6M${x + 3} ${y - 3}l-6 6`, stroke: css("--panel"), "stroke-width": 1.8, "stroke-linecap": "round" }));
+  } else if (state === "active") {
+    L.end.append(svg("circle", { cx: x, cy: y, r: 8, fill: css("--panel"), stroke: c, "stroke-width": 2.5 }), svg("circle", { cx: x, cy: y, r: 3.2, fill: c }));
+  } else {
+    L.end.append(svg("circle", { cx: x, cy: y, r: 8.5, fill: c }), svg("path", { d: `M${x - 3.6} ${y}l2.5 2.5 4.7-4.8`, stroke: css("--panel"), "stroke-width": 1.9, fill: "none", "stroke-linecap": "round" }));
+  }
+}
+
+function drawLoom() {
+  if (!box) build();
+  $("lanes-empty").hidden = S.order.length > 0;
+  const order = S.order.includes("user") ? ["user", ...S.order.filter((a) => a !== "user")] : S.order;
+  // Lanes keep their row once created; "You" is added first when an approval arrives first.
+  for (const a of order) {
+    const L = lane(a), ks = S.knots[a] ?? [];
+    L.counts ??= {};
+    for (let i = L.drawn; i < ks.length; i++) {          // only knots that are new since the last draw
+      const k = ks[i], n = (L.counts[k.s] = (L.counts[k.s] ?? 0) + 1);
+      const x = knotX(k.s, n);
+      L.knots.append(svg("circle", { cx: x, cy: L.y, r: 4.6, fill: k.bad ? css("--bad") : dye(a), class: reduced ? "" : "knot" }));
+      L.x = Math.max(L.x, x);
+    }
+    L.drawn = ks.length;
+    L.name.setAttribute("fill", ink(a));
+    L.line.setAttribute("stroke", dye(a));
+    grow(L);
+    const st = laneState(a);
+    drawEnd(L, st);
+    L.state = st;
+  }
+  const H = Math.max(1, Object.keys(lanes).length) * LANE + 8;
+  box.setAttribute("viewBox", `0 0 ${W} ${H}`);
+  box.setAttribute("height", H);
+  // Station headers and a faint band behind the working (or waiting) station.
+  bands.replaceChildren();
+  for (const h of document.querySelectorAll(".col-h")) {
+    const i = +h.dataset.i, { state } = stationState(i);
+    h.className = `col-h ${state}`;
+    h.querySelector("b").textContent = LABEL[state];
+    if (state === "working" || state === "waiting") bands.append(svg("rect", { x: LEFT + colW * i + 4, y: 0, width: colW - 8, height: H, rx: 10, class: `col-band ${state}` }));
+  }
+  document.querySelector(".chunk span").textContent = S.chunk ? `CHUNK ${S.chunk} · REPEAT UNTIL DONE` : "EACH CHUNK";
+}
+
+// A handoff: the file tag travels from one thread to the other.
+function slide(e) {
+  const A = lanes[e.agent], B = lanes[e.to];
+  if (!A || !B || reduced) return;
+  const chip = el("div", "packet"), c = dye(e.agent);
+  chip.style.borderColor = c;
+  chip.append(e.file ?? "handoff");
+  $("lanes").append(chip);
+  chip.animate([{ left: `${A.x}px`, top: `${A.y}px` }, { left: `${Math.max(B.x, A.x - 40)}px`, top: `${B.y}px` }], { duration: 1400, easing: "cubic-bezier(.65,0,.35,1)", fill: "forwards" })
+    .finished.then(() => setTimeout(() => chip.remove(), 900), () => chip.remove());
+}
+
+// ---- side panels ------------------------------------------------------------------------------
 function drawNow() {
   const i = S.focus >= 0 ? S.focus : Math.max(S.phase, 0);
-  const ran = STATIONS[i].agents.filter((a) => S.runs[a]?.station === i);
-  $("now-title").textContent = `Now · ${STATIONS[i].name}`;
+  const working = Object.entries(S.runs).filter(([, r]) => r.state === "working").map(([a]) => a);
+  const here = STATIONS[i].agents.filter((a) => S.runs[a]?.station === i);
+  const show = working.length ? working : here;
+  $("now-title").textContent = S.gateOpen ? "Waiting for your OK" : S.phase < 0 ? "Waiting for events" : `${STATIONS[working.length ? S.runs[working[0]].station : i].name}`;
   $("now-msg").textContent = S.mgr;
-  $("now-agents").replaceChildren(...(ran.length ? ran.map((a) => {
-    const r = S.runs[a], card = el("div", "agent"), head = el("div", "agent-head"), info = el("div");
-    const st = el("div", "state", LABEL[r.state === "idle" ? "next" : r.state] ?? r.state);
-    if (r.state === "working") { st.style.color = color(a); card.style.borderColor = color(a); }
-    if (r.state === "issues") st.style.color = css("--warn");
-    info.append(el("div", "who", nameOf(a)), st);
-    head.append(face(a, r.state, true), info);
-    card.append(head, el("div", "what", [r.task, r.msg].filter(Boolean).join(" · ")), el("div", "foot mono", r.tokens ? `${short(r.tokens)} tokens` : ""));
-    return card;
-  }) : [el("p", "empty", i !== GATE ? "No agent has worked here yet." : S.gateOpen ? "The team is waiting for your decision." : S.gateDone ? "Approved. The team moved on." : "No decision needed yet.")]));
-  const totals = Object.entries(S.runs).filter(([, r]) => r.tokens).sort((a, b) => b[1].tokens - a[1].tokens);
-  const max = totals[0]?.[1].tokens || 1;
-  $("token-bars").replaceChildren(el("span", "muted", "Tokens by agent"), ...totals.map(([a, r]) => {
-    const s = el("span"), b = el("span", "bar-i"); b.style.width = `${Math.max(6, Math.round((r.tokens / max) * 60))}px`; b.style.background = color(a);
-    s.append(b, `${nameOf(a)} `, el("span", "mono muted", short(r.tokens))); return s;
+  $("now-agents").replaceChildren(...show.map((a) => {
+    const r = S.runs[a], li = el("li"), sw = el("i"), info = el("div"), st = el("span", "st", r.state === "working" ? "Running" : r.state === "issues" ? "Found issues" : r.state === "idle" ? "" : "Done");
+    sw.style.background = dye(a);
+    st.style.color = r.state === "issues" ? css("--bad") : r.state === "working" ? ink(a) : css("--muted");
+    const who = el("b", "", nameOf(a)); who.style.color = ink(a);
+    info.append(who, el("div", "what", [r.task, r.msg].filter(Boolean).join(" · ")));
+    li.append(sw, info, st);
+    return li;
   }));
+  const totals = Object.entries(S.runs).filter(([, r]) => r.tokens).sort((x, y) => y[1].tokens - x[1].tokens);
+  const max = totals[0]?.[1].tokens || 1;
+  $("token-bars").replaceChildren(...(totals.length ? [el("span", "label", "Tokens by agent"), ...totals.map(([a, r]) => {
+    const s = el("span"), b = el("span", "bar-i"); b.style.width = `${Math.max(6, Math.round((r.tokens / max) * 60))}px`; b.style.background = dye(a);
+    s.append(b, `${nameOf(a)} `, el("span", "mono muted", short(r.tokens))); return s;
+  })] : []));
 }
 
 function drawHeader() {
@@ -181,8 +280,9 @@ function drawHeader() {
   $("busy").textContent = String(busy);
   $("tests").textContent = S.tests ? `${S.tests.passed ?? 0}/${(S.tests.passed ?? 0) + (S.tests.failed ?? 0)}` : "-";
   $("mode").textContent = S.chunk ? `In chunks · chunk ${S.chunk}` : "";
-  $("status").textContent = S.gateOpen ? "Waiting for you" : busy ? `${STATIONS[Math.max(S.phase, 0)].name} · ${busy} working` : S.gateDone && S.phase === 7 ? "Done" : S.phase >= 0 ? STATIONS[S.phase].name : "Waiting for events";
-  $("status-dot").className = `dot ${S.gateOpen ? "waiting pulse" : busy ? "pulse" : ""}`;
+  const shipped = S.gateDone && S.phase === 7;
+  $("status").textContent = S.gateOpen ? "Waiting for your OK" : busy ? `${STATIONS[Math.max(S.phase, 0)].name} · ${busy} running` : shipped ? "Done" : S.phase >= 0 ? STATIONS[S.phase].name : "Waiting for events";
+  $("status-dot").className = `dot ${S.gateOpen ? "waiting" : busy ? "run" : S.testFailed ? "fail" : shipped ? "done" : ""}`;
 }
 
 // Watchguard: watches for silence and shows what has been verified.
@@ -211,35 +311,28 @@ function drawGuard() {
 setInterval(() => drawGuard(), 5000);
 
 let queued = false;
-const render = () => { if (queued) return; queued = true; requestAnimationFrame(() => { queued = false; drawHeader(); drawStations(); drawNow(); drawGuard(); }); };
-
-function slide(e) {
-  const cards = $("stations").children, rail = $("rail").getBoundingClientRect();
-  const from = S.runs[e.agent]?.station ?? stationFor(e.agent), to = S.runs[e.to]?.station ?? stationFor(e.to);
-  if (!cards[from] || !cards[to]) return;
-  const x = (i) => { const r = cards[i].getBoundingClientRect(); return `${r.left + r.width / 2 - rail.left}px`; };
-  const chip = el("div", "packet"), c = color(e.agent);
-  chip.style.borderColor = c;
-  chip.append(svg("svg", { width: 12, height: 12, viewBox: "0 0 24 24", "aria-hidden": "true" }, [svg("path", { d: "M6 3h9l4 4v14H6z", fill: "none", stroke: c, "stroke-width": 2.2, "stroke-linejoin": "round" })]), e.file ?? "handoff");
-  $("rail").append(chip);
-  const anim = chip.animate([{ left: x(from) }, { left: x(to) }], { duration: 1500, easing: "cubic-bezier(.55,0,.2,1)", fill: "forwards" });
-  anim.finished.then(() => setTimeout(() => chip.remove(), 900), () => chip.remove());
-}
+const render = () => { if (queued) return; queued = true; requestAnimationFrame(() => { queued = false; drawHeader(); drawLoom(); drawNow(); drawGuard(); }); };
 
 function feed(e, fresh) {
-  const li = el("li", fresh ? "new" : ""), who = e.agent ?? (e.type === "commit" ? "manager" : "");
-  const text = el("div", "msg"); text.append(el("b", "", nameOf(who) || e.type), ` ${e.msg ?? ""}`, el("time", "", e.ts ? e.ts.slice(11, 19) : ""));
-  li.append(face(who, "done"), text);
-  li.firstChild.style.transform = "scale(.6)"; li.firstChild.style.margin = "-6px";
+  const who = e.agent ?? (e.type === "commit" ? "manager" : "");
+  const li = el("li", fresh ? "new" : ""), dot = el("i"), text = el("div");
+  dot.style.background = who ? dye(who) : css("--stitch");
+  const b = el("b", "", nameOf(who) || e.type); b.style.color = who ? ink(who) : "";
+  text.append(b, ` ${e.msg ?? ""}`, el("time", "", e.ts ? e.ts.slice(11, 19) : ""));
+  li.append(dot, text);
   if (fresh) setTimeout(() => li.classList.remove("new"), 2500);
   const list = $("feed"); list.prepend(li);
   while (list.children.length > 60) list.lastChild.remove();
 }
 
 // ---- wiring --------------------------------------------------------------------------------
-const applyTheme = () => { document.documentElement.dataset.theme = dark ? "dark" : "light"; $("theme").textContent = dark ? "Light mode" : "Dark mode"; render(); };
+// A theme or size change redraws the loom from the state, without animation.
+const redraw = () => { box = null; for (const k of Object.keys(lanes)) delete lanes[k]; render(); };
+const applyTheme = () => { document.documentElement.dataset.theme = dark ? "dark" : "light"; $("theme").setAttribute("aria-label", dark ? "Switch to light mode" : "Switch to dark mode"); redraw(); };
 $("theme").addEventListener("click", () => { dark = !dark; try { localStorage.setItem("knit-theme", dark ? "dark" : "light"); } catch {} applyTheme(); });
 applyTheme();
+let rz = 0;
+addEventListener("resize", () => { clearTimeout(rz); rz = setTimeout(() => { if (Math.abs(Math.max(880, $("weave").clientWidth) - W) > 4) redraw(); }, 150); });
 
 let lastArrival = 0;
 const source = new EventSource("/stream");
@@ -250,7 +343,7 @@ source.addEventListener("meta", (m) => {
   document.title = `Knit v${d.version} · ${d.project}`;
   if (d.latest) { $("update").hidden = false; $("update").textContent = `Update: v${d.latest}`; $("update").title = `Knit ${d.latest} is available. In the knit folder: git pull, then node scripts/install.mjs claude --global`; }
 });
-source.addEventListener("reset", () => { reset(); $("feed").replaceChildren(); render(); });
+source.addEventListener("reset", () => { reset(); $("feed").replaceChildren(); redraw(); });
 source.addEventListener("event", (m) => {
   const e = JSON.parse(m.data), now = performance.now(), fresh = now - lastArrival > 120;
   lastArrival = now;
