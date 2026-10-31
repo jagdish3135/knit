@@ -42,8 +42,19 @@ h1,h2{font-family:var(--font-display);letter-spacing:-.02em;margin:0}
 
 /* Layout */
 .main{display:flex;flex-wrap:wrap;gap:14px;align-items:flex-start}
-.loom{flex:999 1 720px;min-width:0;position:sticky;top:14px}
-@media (max-width:1100px){.loom{position:static}}
+.loom{flex:999 1 720px;min-width:0}
+/* Wide screens: an app shell. The header and the loom stay put; only the side column scrolls
+   (the loom scrolls inside itself if a run has more threads than fit). */
+@media (min-width:1101px){
+  html,body{height:100%}
+  body{overflow:hidden}
+  .wrap{height:100vh;padding-bottom:18px}
+  .top{flex:none}
+  .main{flex:1;min-height:0;flex-wrap:nowrap;align-items:stretch}
+  .loom{display:flex;flex-direction:column;min-height:0;overflow:auto}
+  .side{flex:0 0 380px;min-height:0;overflow-y:auto;overscroll-behavior:contain;padding:2px 4px 2px 2px;scrollbar-width:thin;scrollbar-color:var(--stitch) transparent}
+  #feed{max-height:none;overflow:visible}
+}
 .side{flex:1 1 340px;min-width:0;display:flex;flex-direction:column;gap:14px}
 .scroll{overflow-x:auto;padding-bottom:4px}
 .swipe{display:none;margin:-4px 0 10px}
