@@ -1,0 +1,14 @@
+{
+  "name": "knit",
+  "private": true,
+  "type": "module",
+  "description": "Dev tooling only: the site, the board and the installer have no runtime dependencies.",
+  "scripts": {
+    "site": "node scripts/serve-site.mjs",
+    "test:site": "playwright test",
+    "check:contrast": "node scripts/check-contrast.mjs"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.64.1"
+  }
+}

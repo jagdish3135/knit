@@ -1,0 +1,114 @@
+/* Knit "Loom" tokens: the one place for colour, type, space, radius, shadow and motion.
+   Shared by the site, the Knit Board and the docs graphics. scripts/check-contrast.mjs checks the pairs. */
+
+@font-face{font-family:"Bricolage Grotesque";src:url("fonts/bricolage-grotesque.woff2") format("woff2");font-weight:200 800;font-display:swap}
+@font-face{font-family:"Geist";src:url("fonts/geist.woff2") format("woff2");font-weight:100 900;font-display:swap}
+@font-face{font-family:"Geist Mono";src:url("fonts/geist-mono.woff2") format("woff2");font-weight:100 900;font-display:swap}
+
+:root{
+  color-scheme:light;
+  /* Ground and ink */
+  --cotton:#F3EEE4;          /* page background: unbleached cotton */
+  --cotton-2:#EFE9DD;        /* alternate band */
+  --panel:#FFFDF8;           /* cards, panels */
+  --ink:#1E2A5A;             /* indigo ink: text and primary buttons */
+  --ink-2:#3A4573;           /* hover of ink */
+  --muted:#5E5A50;           /* secondary text */
+  --on-ink:#FFFDF8;          /* text on ink buttons */
+  --line:#D9D0BF;            /* hairlines */
+  --stitch:#827C6E;          /* thread grey: stitched dividers, card stitches */
+  /* Dyes */
+  --madder:#C4432B;          /* fills, large text */
+  --madder-text:#B33A23;     /* madder as body text */
+  --turmeric:#E2A522;        /* fills behind ink text, highlights */
+  --on-turmeric:#1E2A5A;
+  --turmeric-text:#855A00;   /* turmeric as text */
+  --ok:#286F43; --warn:#855A00; --bad:#B33A23;
+  --focus:#C4432B;
+  --cursor-thread:#C4432B;
+
+  /* Agent threads: one colour per agent, used on the site, the board and the docs */
+  --t-manager:#855A00;
+  --t-product-manager:#B23A22;
+  --t-architect:#2C5AA8;
+  --t-lean-coder:#466E0F;
+  --t-ux-designer:#AE2E6C;
+  --t-frontend-dev:#0B6F6B;
+  --t-backend-dev:#5A45B6;
+  --t-tester:#286F43;
+  --t-debugger:#A35000;
+  --t-code-reviewer:#575D6C;
+  --t-security-reviewer:#A3263A;
+  --t-devops:#863C88;
+  --t-tech-writer:#7A5230;
+  --t-oncall:#65615A;
+
+  /* Dyes for 3D threads, spools and fills (same in light and dark; never used as body text) */
+  --dye-manager:#E2A522; --dye-product-manager:#E2654A; --dye-architect:#4F7FD6; --dye-lean-coder:#8DBA3C;
+  --dye-ux-designer:#E2589B; --dye-frontend-dev:#1FA9A0; --dye-backend-dev:#7F6AE6; --dye-tester:#3FAE6E;
+  --dye-debugger:#EF8A2B; --dye-code-reviewer:#8B93A6; --dye-security-reviewer:#D94860; --dye-devops:#B565C2;
+  --dye-tech-writer:#B98858; --dye-oncall:#8B8577;
+
+  /* Type */
+  --font-display:"Bricolage Grotesque",ui-sans-serif,system-ui,sans-serif;
+  --font-body:"Geist",ui-sans-serif,system-ui,sans-serif;
+  --font-mono:"Geist Mono",ui-monospace,"Cascadia Mono",Consolas,monospace;
+  --fs-hero:clamp(56px,10vw,152px);
+  --fs-h1:clamp(44px,6.4vw,96px);
+  --fs-h2:clamp(32px,4.2vw,60px);
+  --fs-h3:24px;
+  --fs-lede:clamp(18px,1.6vw,22px);
+  --fs-body:17px;
+  --fs-small:14px;
+  --fs-label:12px;
+  --lh-tight:.94; --lh-head:1.05; --lh-body:1.6;
+  --track-tight:-.045em; --track-label:.12em;
+
+  /* Space, radius, shadow */
+  --s-1:4px; --s-2:8px; --s-3:12px; --s-4:16px; --s-5:24px; --s-6:32px; --s-7:48px; --s-8:64px; --s-9:96px; --s-10:144px;
+  --r-1:6px; --r-2:10px; --r-3:16px; --r-4:24px; --r-pill:999px;
+  --shadow-1:0 1px 2px rgba(30,42,90,.08),0 2px 8px -2px rgba(30,42,90,.08);
+  --shadow-2:0 24px 60px -28px rgba(30,42,90,.35);
+
+  /* Motion (mirrored in motion.js) */
+  --ease-out:cubic-bezier(.16,1,.3,1);
+  --ease-in-out:cubic-bezier(.65,0,.35,1);
+  --ease-tug:cubic-bezier(.34,1.56,.64,1);
+  --dur-1:120ms; --dur-2:200ms; --dur-3:400ms; --dur-4:600ms;
+
+  /* Texture: faint warp and weft, and the stitch dash */
+  --weave:repeating-linear-gradient(0deg,rgba(30,42,90,.022) 0 1px,transparent 1px 3px),repeating-linear-gradient(90deg,rgba(139,133,119,.03) 0 1px,transparent 1px 3px);
+  --stitch-dash:6px;
+  --stitch-gap:5px;
+}
+
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  color-scheme:dark;
+  --cotton:#0D1230; --cotton-2:#11173A; --panel:#151B3D;
+  --ink:#EDE8DD; --ink-2:#FFFFFF; --muted:#A9A6BE; --on-ink:#0D1230;
+  --line:#272E58; --stitch:#6A70A6;
+  --madder:#F07A5E; --madder-text:#FF8A6E; --turmeric:#F0B73A; --on-turmeric:#0D1230; --turmeric-text:#F0B73A;
+  --ok:#74D69A; --warn:#F0B73A; --bad:#FF8A6E; --focus:#F0B73A; --cursor-thread:#F0B73A;
+  --t-manager:#F0B73A; --t-product-manager:#FF8A6E; --t-architect:#86AEFF; --t-lean-coder:#B0DA62;
+  --t-ux-designer:#FF8EC4; --t-frontend-dev:#55D9CF; --t-backend-dev:#AE9CFF; --t-tester:#74D69A;
+  --t-debugger:#FFAA55; --t-code-reviewer:#BEC5D4; --t-security-reviewer:#FF7A90; --t-devops:#E4A2EE;
+  --t-tech-writer:#E6BE94; --t-oncall:#A9A496;
+  --shadow-1:0 1px 2px rgba(0,0,0,.3),0 2px 8px -2px rgba(0,0,0,.35);
+  --shadow-2:0 30px 70px -30px rgba(0,0,0,.7);
+  --weave:repeating-linear-gradient(0deg,rgba(237,232,221,.018) 0 1px,transparent 1px 3px),repeating-linear-gradient(90deg,rgba(237,232,221,.014) 0 1px,transparent 1px 3px);
+}}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --cotton:#0D1230; --cotton-2:#11173A; --panel:#151B3D;
+  --ink:#EDE8DD; --ink-2:#FFFFFF; --muted:#A9A6BE; --on-ink:#0D1230;
+  --line:#272E58; --stitch:#6A70A6;
+  --madder:#F07A5E; --madder-text:#FF8A6E; --turmeric:#F0B73A; --on-turmeric:#0D1230; --turmeric-text:#F0B73A;
+  --ok:#74D69A; --warn:#F0B73A; --bad:#FF8A6E; --focus:#F0B73A; --cursor-thread:#F0B73A;
+  --t-manager:#F0B73A; --t-product-manager:#FF8A6E; --t-architect:#86AEFF; --t-lean-coder:#B0DA62;
+  --t-ux-designer:#FF8EC4; --t-frontend-dev:#55D9CF; --t-backend-dev:#AE9CFF; --t-tester:#74D69A;
+  --t-debugger:#FFAA55; --t-code-reviewer:#BEC5D4; --t-security-reviewer:#FF7A90; --t-devops:#E4A2EE;
+  --t-tech-writer:#E6BE94; --t-oncall:#A9A496;
+  --shadow-1:0 1px 2px rgba(0,0,0,.3),0 2px 8px -2px rgba(0,0,0,.35);
+  --shadow-2:0 30px 70px -30px rgba(0,0,0,.7);
+  --weave:repeating-linear-gradient(0deg,rgba(237,232,221,.018) 0 1px,transparent 1px 3px),repeating-linear-gradient(90deg,rgba(237,232,221,.014) 0 1px,transparent 1px 3px);
+}

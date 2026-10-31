@@ -3,7 +3,7 @@ name: Landing page
 on:
   push:
     branches: [main]
-    paths: [site/**, assets/**, docs/examples/**, .github/workflows/pages.yml]
+    paths: [site/**, assets/**, docs/examples/**, VERSION, .github/workflows/pages.yml]
   workflow_dispatch:
 
 permissions:
@@ -27,6 +27,7 @@ jobs:
         run: |
           mkdir -p _site/assets
           cp -r site/. _site/
+          cp VERSION _site/VERSION
           cp assets/*.svg assets/*.png _site/assets/
           cp docs/examples/habit-tracker/tokens.svg _site/assets/tokens.svg
       - uses: actions/configure-pages@v5

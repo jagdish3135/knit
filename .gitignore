@@ -9,3 +9,10 @@ build/
 .DS_Store
 Thumbs.db
 .claude/settings.local.json
+
+# graphify: local code knowledge graph (rebuilt by git hooks)
+graphify-out/
+
+# Playwright output
+test-results/
+playwright-report/
